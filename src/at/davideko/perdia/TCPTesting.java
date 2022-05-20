@@ -7,14 +7,12 @@ import java.net.UnknownHostException;
 public class TCPTesting {
     public static void main(String[] args) {
         try {
-
-            Socket socket = new Socket("localhost", 3306);
-            //Socket socket = new Socket("whois.internic.net", 43);
+            Socket socket = new Socket("localhost", 6969);
 
             InputStreamReader input = new InputStreamReader(socket.getInputStream());
             PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 
-            writer.println("SELECT * FROM `values`");
+            writer.println("Hello!");
 
             BufferedReader reader = new BufferedReader(input);
 
@@ -31,6 +29,4 @@ public class TCPTesting {
             //e.printStackTrace();
         }
     }
-
-
 }
