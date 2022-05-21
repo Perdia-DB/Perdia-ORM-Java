@@ -1,11 +1,10 @@
 package at.davideko.perdia;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class TCPClient {
@@ -24,7 +23,8 @@ public class TCPClient {
 
     public void write(String text) {
         try {
-            PrintWriter writer = new PrintWriter(this.socket.getOutputStream(), true);
+            OutputStreamWriter osw = new OutputStreamWriter(this.socket.getOutputStream(), StandardCharsets.UTF_8);
+            PrintWriter writer = new PrintWriter(osw, true);
 
             writer.println(text);
         } catch (IOException e) {
@@ -32,27 +32,37 @@ public class TCPClient {
         }
     }
 
-    public String[] read() {
-        ArrayList<String> s = new ArrayList<>();
+    public byte[] read() {
+        byte[] bytes = new byte[4096];
 
         try {
-            InputStreamReader input = new InputStreamReader(socket.getInputStream());
+            //InputStreamReader input = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
+            //BufferedReader reader = new BufferedReader(input);
 
-            BufferedReader reader = new BufferedReader(input);
+            InputStream in = socket.getInputStream();
+            bytes = in.readAllBytes();
 
+
+
+            /*
+            byte[] processed = buffer.toByteArray();
+
+            System.out.println(processed[0]);
+             */
+
+            /*
             while (reader.readLine() != null) {
                 s.add(reader.readLine());
                 if (s.get(s.size()-1).equals("]")) {
                     break;
                 }
             }
+            */
         } catch (IOException e) {
             System.out.println("IO Error: " + e.getMessage());
+            e.printStackTrace();
         }
 
-        String[] r = new String[s.size()];
-        r = s.toArray(r);
-
-        return r;
+        return bytes;
     }
 }
