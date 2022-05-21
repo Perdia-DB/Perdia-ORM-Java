@@ -10,5 +10,9 @@ public class Crypto {
     private final String alg = "AES/CBC/PKCS5Padding";
     private final IvParameterSpec ivspec = new IvParameterSpec(new byte[16]);
 
-    //public static decrypt()
+    public static void encrypt() {
+
+    }
+
+    //public static void decrypt()
 }

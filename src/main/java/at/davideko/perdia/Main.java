@@ -5,10 +5,9 @@ public class Main {
     public static void main(String[] args) {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
 
-        client.write("test");
+        client.write("QUERY \"Montag\";");
 
-
-        byte[] test = client.read();
+        String[] test = client.read();
         System.out.println(test[0]);
 
     }

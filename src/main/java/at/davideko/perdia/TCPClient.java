@@ -32,15 +32,16 @@ public class TCPClient {
         }
     }
 
-    public byte[] read() {
+    public String[] read() {
         byte[] bytes = new byte[4096];
+        ArrayList<String> s = new ArrayList<>();
 
         try {
-            //InputStreamReader input = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
-            //BufferedReader reader = new BufferedReader(input);
+            InputStreamReader input = new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8);
+            BufferedReader reader = new BufferedReader(input);
 
-            InputStream in = socket.getInputStream();
-            bytes = in.readAllBytes();
+            //InputStream in = socket.getInputStream();
+            //bytes = in.readAllBytes();
 
 
 
@@ -50,19 +51,20 @@ public class TCPClient {
             System.out.println(processed[0]);
              */
 
-            /*
             while (reader.readLine() != null) {
                 s.add(reader.readLine());
-                if (s.get(s.size()-1).equals("]")) {
+                if (s.get(s.size()-1).charAt(s.get(s.size()-1).length()-1) == ']') {
                     break;
                 }
             }
-            */
         } catch (IOException e) {
             System.out.println("IO Error: " + e.getMessage());
             e.printStackTrace();
         }
 
-        return bytes;
+        String[] r = new String[s.size()];
+        r = s.toArray(r);
+
+        return r;
     }
 }
