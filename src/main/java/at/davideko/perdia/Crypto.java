@@ -83,7 +83,7 @@ public class Crypto {
             }
 
             // Removing trailing padding 0's from decrypted plaintext
-            while (decrypted[decrypted.length-1] == (byte) 0) {
+            while ((decrypted.length != 0) && (decrypted[decrypted.length-1] == (byte) 0)) {
                 decrypted = ArrayUtils.removeElement(decrypted, (byte) 0);
             }
 

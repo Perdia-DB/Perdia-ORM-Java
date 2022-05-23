@@ -1,2 +1,1 @@
-QUERY "Montag";
-QUERY "Montag";
+QUERY "Montag"; a

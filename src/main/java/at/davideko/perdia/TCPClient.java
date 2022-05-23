@@ -3,6 +3,7 @@ package at.davideko.perdia;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 
 public class TCPClient {
     Socket socket;
