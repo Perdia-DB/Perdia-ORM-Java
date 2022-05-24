@@ -51,17 +51,14 @@ public class Crypto {
             }
 
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println("Invalid Key: " + e.getMessage());
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException e) {
+            // This shouldn't be able to happen
+            throw new AssertionError(e);
         } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            System.out.println("Invalid data length: " + e.getMessage());
         } catch (BadPaddingException e) {
-            e.printStackTrace();
+            System.out.println("Invalid padding: " + e.getMessage());
         }
 
         return encrypted;
@@ -88,17 +85,14 @@ public class Crypto {
             }
 
         } catch (InvalidKeyException e) {
-            e.printStackTrace();
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            System.out.println("Invalid Key: " + e.getMessage());
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException e) {
+            // This shouldn't be able to happen
+            throw new AssertionError(e);
         } catch (IllegalBlockSizeException e) {
-            e.printStackTrace();
+            System.out.println("Invalid data length: " + e.getMessage());
         } catch (BadPaddingException e) {
-            e.printStackTrace();
+            System.out.println("Invalid padding: " + e.getMessage());
         }
 
         return decrypted;

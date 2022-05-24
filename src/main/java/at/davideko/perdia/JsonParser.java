@@ -16,7 +16,7 @@ public class JsonParser {
         try {
             query = mapper.readValue(b, Query[].class);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("IO Error: " + e.getMessage());
         }
     }
 

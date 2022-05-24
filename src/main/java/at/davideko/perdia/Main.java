@@ -26,7 +26,7 @@ public class Main {
             System.out.println(jp.query[0].name);
             System.out.println(jp.query[0].data.first);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
 
     }
