@@ -1,1 +1,13 @@
-QUERY "Montag"; a
+TYPE "DAY";
+NAME "First" TYPE STRING STARTING "Nothing";
+NAME "Second" TYPE STRING STARTING "Nothing";
+END;
+
+CREATE "Montag" TYPE "DAY";
+
+QUERY "Montag" THEN; 
+SET "First" VALUE "Science";
+SET "Second" VALUE "CS";
+END;
+
+QUERY "Montag";

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class JsonParser {
     protected ObjectMapper mapper = new ObjectMapper();
@@ -34,5 +35,7 @@ public class JsonParser {
     public static class QueryData {
         @JsonProperty("First") public String first;
         @JsonProperty("Second") public String second;
+
+        HashMap<String, String> data = new HashMap<String, String>();
     }
 }
