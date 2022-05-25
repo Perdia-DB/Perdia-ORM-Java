@@ -1,11 +1,5 @@
 package at.davideko.perdia.queries;
 
-enum DataType {
-    STRING,
-    INTEGER,
-    FLOAT
-}
-
 public class DataEntry {
     DataType type = null;
     String stringBuffer = "";

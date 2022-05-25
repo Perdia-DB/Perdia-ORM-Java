@@ -1,5 +1,6 @@
 package at.davideko.perdia.queries;
 
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class Template {
         data.put(name, entry);
     }
 
-    public void addEntry(String name, DataType dt, QueryObject starting) {
+    public void addEntry(String name, DataType dt, Object starting) {
         DataEntry entry = new DataEntry(dt);
         entry.write(starting);
         data.put(name, entry);
@@ -36,30 +37,52 @@ public class Template {
             switch (set.getValue().type) {
                 case STRING -> {
                     if (set.getValue().stringBuffer.equals("")) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING;");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING STARTING \"" + set.getValue().stringBuffer + "\";");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING STARTING \"" + set.getValue().stringBuffer + "\"; \n");
                     }
                 }
                 case INTEGER -> {
                     if (set.getValue().intBuffer == 0) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER;");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().intBuffer + ";");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().intBuffer + "; \n");
                     }
                 }
                 case FLOAT -> {
                     if (set.getValue().floatBuffer == 0f) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT;");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer + ";");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer + "; \n");
                     }
                 }
             }
         }
 
+        r.append("END; \n");
+
         return r.toString();
     }
 
-    // TODO: add "toPreset" function which writes the toString output to a JSON file in src/main/presets
+    public void toPreset(String filename) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter("presets/" + filename + ".pang"));
+            writer.write(toString());
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("IO Error, could not write preset to file: " + e.getMessage());
+        }
+    }
+
+    // TODO: make readPreset work
+    public void readPreset(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("presets/" + filename + ".pang"));
+            reader.read();
+
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("IO Error, could not write preset to file: " + e.getMessage());
+        }
+    }
 }

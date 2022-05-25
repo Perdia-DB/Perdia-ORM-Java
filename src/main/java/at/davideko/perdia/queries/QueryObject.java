@@ -13,25 +13,25 @@ public class QueryObject {
     }
 
     public String createQueryObject() {
-        return "CREATE \"" + this.name + "\" TYPE \"" + this.tmp + "\";";
+        return "CREATE \"" + this.name + "\" TYPE \"" + this.tmp + "\"; \n";
     }
 
     public String writeToQueryObject(HashMap<String, DataEntry> hm) {
         StringBuilder r = new StringBuilder();
 
-        r.append("QUERY \"" + this.name + "\" THEN;");
+        r.append("QUERY \"" + this.name + "\" THEN; \n");
 
         for (Map.Entry<String, DataEntry> addSet: hm.entrySet()) {
             for (Map.Entry<String, DataEntry> existingSet: this.tmp.data.entrySet()) {
                 if (addSet.getKey().equals(existingSet.getKey())) {
                     existingSet.getValue().write(addSet.getValue());
 
-                    r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue() + "\";");
+                    r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue() + "\"; \n");
                 }
             }
         }
 
-        r.append("END;");
+        r.append("END; \n");
         return r.toString();
     }
 }
