@@ -21,7 +21,7 @@ public class Template {
         data.put(name, entry);
     }
 
-    public void addEntry(String name, DataType dt, Object starting) {
+    public void addEntry(String name, DataType dt, QueryObject starting) {
         DataEntry entry = new DataEntry(dt);
         entry.write(starting);
         data.put(name, entry);
@@ -43,16 +43,16 @@ public class Template {
                 }
                 case INTEGER -> {
                     if (set.getValue().intBuffer == 0) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER;");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().intBuffer);
+                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().intBuffer + ";");
                     }
                 }
                 case FLOAT -> {
                     if (set.getValue().floatBuffer == 0f) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT;");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer);
+                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer + ";");
                     }
                 }
             }
