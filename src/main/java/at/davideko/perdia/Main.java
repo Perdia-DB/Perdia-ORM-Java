@@ -4,12 +4,10 @@ import at.davideko.perdia.queries.DataEntry;
 import at.davideko.perdia.queries.DataType;
 import at.davideko.perdia.queries.QueryObject;
 import at.davideko.perdia.queries.Template;
+import at.davideko.perdia.tcp.Crypto;
+import at.davideko.perdia.tcp.TCPClient;
 
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Map;
+import java.util.HashMap;
 
 public class Main {
 
@@ -20,17 +18,27 @@ public class Main {
         Template template = new Template("DAY");
         template.addEntry("First", DataType.STRING, "Nothing");
         template.addEntry("Second", DataType.STRING, "Nothing");
-        System.out.println(template.toString());
+        System.out.println(template.toQuery());
         template.toPreset("preset_day");
+
+        HashMap<String, DataEntry> hm = new HashMap<>();
+        DataEntry buffer = new DataEntry(DataType.STRING);
+        buffer.write("Science");
+        hm.put("First", buffer);
+        buffer = new DataEntry(DataType.STRING);
+        buffer.write("CS");
+        hm.put("Second", buffer);
+        QueryObject qo = new QueryObject("Monday", template);
+        System.out.println(qo.createQueryObject());
+        System.out.println(qo.writeToQueryObject(hm));
+        System.out.println(qo.toQuery());
 
         /*
         try {
             byte[] raw = Files.readAllBytes(Path.of("query.txt"));
-            byte[] qb = c.encrypt(raw);
             client.write(qb);
 
             byte[] b = client.read();
-            b = c.decrypt(b);
             String s = new String(b, StandardCharsets.UTF_8);
             System.out.println(s);
 

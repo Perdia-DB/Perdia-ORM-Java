@@ -17,6 +17,26 @@ public class DataEntry {
             case FLOAT -> floatBuffer = (float) value;
         }
     }
+
+    public Object read() {
+        switch (this.type) {
+            case STRING -> {
+                return stringBuffer;
+            }
+            case INTEGER -> {
+                return intBuffer;
+            }
+            case FLOAT -> {
+                return floatBuffer;
+            }
+        }
+
+        return null;
+    }
+
+    public String toString() {
+        return read().toString();
+    }
 }
 
 

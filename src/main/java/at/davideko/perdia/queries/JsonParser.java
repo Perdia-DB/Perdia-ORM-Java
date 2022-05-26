@@ -1,4 +1,4 @@
-package at.davideko.perdia;
+package at.davideko.perdia.queries;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,13 +29,6 @@ public class JsonParser {
         public String instance;
 
         @JsonProperty("data")
-        public QueryData data;
-    }
-
-    public static class QueryData {
-        @JsonProperty("First") public String first;
-        @JsonProperty("Second") public String second;
-
-        HashMap<String, String> data = new HashMap<String, String>();
+        public HashMap<String, DataEntry> data = new HashMap<>();
     }
 }

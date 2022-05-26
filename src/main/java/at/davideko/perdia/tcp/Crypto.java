@@ -1,4 +1,4 @@
-package at.davideko.perdia;
+package at.davideko.perdia.tcp;
 
 import javax.crypto.*;
 import javax.crypto.spec.IvParameterSpec;

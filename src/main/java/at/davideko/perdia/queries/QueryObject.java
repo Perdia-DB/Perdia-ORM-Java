@@ -24,7 +24,8 @@ public class QueryObject {
         for (Map.Entry<String, DataEntry> addSet: hm.entrySet()) {
             for (Map.Entry<String, DataEntry> existingSet: this.tmp.data.entrySet()) {
                 if (addSet.getKey().equals(existingSet.getKey())) {
-                    existingSet.getValue().write(addSet.getValue());
+
+                    existingSet.getValue().write(addSet.getValue().read());
 
                     r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue() + "\"; \n");
                 }
@@ -33,5 +34,9 @@ public class QueryObject {
 
         r.append("END; \n");
         return r.toString();
+    }
+
+    public String toQuery() {
+        return "QUERY \"" + this.name + "\";";
     }
 }

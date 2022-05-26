@@ -28,7 +28,7 @@ public class Template {
         data.put(name, entry);
     }
 
-    public String toString() {
+    public String toQuery() {
         StringBuilder r = new StringBuilder();
 
         r.append("TYPE \"" + this.type + "\"; \n");
@@ -67,7 +67,7 @@ public class Template {
     public void toPreset(String filename) {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter("presets/" + filename + ".pang"));
-            writer.write(toString());
+            writer.write(toQuery());
             writer.close();
         } catch (IOException e) {
             System.out.println("IO Error, could not write preset to file: " + e.getMessage());
@@ -84,5 +84,9 @@ public class Template {
         } catch (IOException e) {
             System.out.println("IO Error, could not write preset to file: " + e.getMessage());
         }
+    }
+
+    public String toString() {
+        return this.type;
     }
 }

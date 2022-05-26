@@ -1,4 +1,4 @@
-package at.davideko.perdia;
+package at.davideko.perdia.tcp;
 
 import java.io.*;
 import java.net.Socket;
@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class TCPClient {
     Socket socket;
+    Crypto c = new Crypto();
 
     public TCPClient(String host, int port) {
         try {
@@ -22,7 +23,10 @@ public class TCPClient {
     public void write(byte[] text) {
         try {
             OutputStream os = socket.getOutputStream();
+
+            text = c.encrypt(text);
             os.write(text);
+
             //os.close();
 
         } catch (IOException e) {
@@ -35,7 +39,10 @@ public class TCPClient {
 
         try {
             InputStream in = socket.getInputStream();
+
             bytes = in.readAllBytes();
+            bytes = c.decrypt(bytes);
+
             //in.close();
 
         } catch (IOException e) {
