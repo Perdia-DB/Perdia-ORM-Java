@@ -3,8 +3,8 @@ package at.davideko.perdia.queries;
 public class DataEntry {
     DataType type = null;
     String stringBuffer = "";
-    int intBuffer = 0;
-    float floatBuffer = 0f;
+    long intBuffer = 0;
+    double floatBuffer = 0.0;
 
     public DataEntry(DataType type) {
         this.type = type;
@@ -13,8 +13,8 @@ public class DataEntry {
     public void write(Object value) {
         switch (this.type) {
             case STRING -> stringBuffer = (String) value;
-            case INTEGER -> intBuffer = (int) value;
-            case FLOAT -> floatBuffer = (float) value;
+            case INTEGER -> intBuffer = (long) value;
+            case FLOAT -> floatBuffer = (double) value;
         }
     }
 

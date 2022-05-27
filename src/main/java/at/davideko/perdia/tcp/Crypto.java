@@ -43,7 +43,7 @@ public class Crypto {
             SecretKey key = new SecretKeySpec(this.pwd, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key, ivspec);
 
-            for (int i = 0; i < bytes.length / 16; i++) {
+            for (int i = 0; i < bytes.length / 16 + 1; i++) {
                 byte[] chunk = Arrays.copyOfRange(bytes, i*16, 16 + i*16);
 
                 chunk = cipher.doFinal(chunk);

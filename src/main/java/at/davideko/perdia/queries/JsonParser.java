@@ -1,34 +1,69 @@
 package at.davideko.perdia.queries;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class JsonParser {
-    protected ObjectMapper mapper = new ObjectMapper();
     protected byte[] b;
-    Query[] query = null;
+    public Query query = new Query();
 
     public JsonParser(byte[] bytes) {
         this.b = bytes;
 
-        try {
-            query = mapper.readValue(b, Query[].class);
-        } catch (IOException e) {
-            System.out.println("IO Error: " + e.getMessage());
+        String s = new String(b, StandardCharsets.UTF_8);
+        JSONArray arr = new JSONArray(s);
+
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject obj = (JSONObject) arr.get(i);
+
+            this.query.template = obj.getString("template");
+            this.query.instance = obj.getString("instance");
+
+            JSONObject data = obj.getJSONObject("data");
+            Iterator keys = data.keys();
+            while(keys.hasNext()) {
+                String currentDynamicKey = (String) keys.next();
+                Object currentDynamicValue = data.get(currentDynamicKey);
+
+                DataEntry buffer = null;
+                if (currentDynamicValue instanceof String) {
+                    buffer = new DataEntry(DataType.STRING);
+                } else if (currentDynamicValue instanceof Long) {
+                    buffer = new DataEntry(DataType.INTEGER);
+                } else if (currentDynamicValue instanceof Double) {
+                    buffer = new DataEntry(DataType.FLOAT);
+                } else {
+                    throw new AssertionError("Value not accepted");
+                }
+
+                buffer.write(currentDynamicValue);
+                this.query.data.put(currentDynamicKey, buffer);
+            }
         }
     }
 
     public static class Query {
-        @JsonProperty("template")
-        public String name;
+        public String template;
 
-        @JsonProperty("instance")
         public String instance;
 
-        @JsonProperty("data")
         public HashMap<String, DataEntry> data = new HashMap<>();
     }
+
+     public String getTemplate() {
+        return this.query.template;
+     }
+
+     public String getInstance() {
+        return this.query.instance;
+     }
+
+     public HashMap<String, DataEntry> getData() {
+        return this.query.data;
+     }
 }
+

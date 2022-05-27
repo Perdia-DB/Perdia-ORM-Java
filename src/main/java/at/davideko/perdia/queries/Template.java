@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class Template {
     public String type;
-    HashMap<String, DataEntry> data = new HashMap<String, DataEntry>();
+    HashMap<String, DataEntry> data = new HashMap<>();
 
     public Template(String type) {
         this.type = type;
@@ -82,7 +82,7 @@ public class Template {
 
             reader.close();
         } catch (IOException e) {
-            System.out.println("IO Error, could not write preset to file: " + e.getMessage());
+            System.out.println("IO Error, could not read preset from file: " + e.getMessage());
         }
     }
 
