@@ -1,6 +1,9 @@
 package at.davideko.perdia.queries;
 
+import at.davideko.perdia.tcp.TCPClient;
+
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -74,7 +77,7 @@ public class Template {
             if (!Files.exists(Path.of(helper + "/presets"))) {
                 new File( helper + "/presets").mkdir();
             }
-            BufferedWriter writer = new BufferedWriter(new FileWriter("presets/" + filename + ".pang"));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("presets/" + filename + ".pang"), StandardCharsets.UTF_8));
             writer.write(toQuery());
             writer.close();
         } catch (IOException e) {
@@ -82,16 +85,17 @@ public class Template {
         }
     }
 
-    // TODO: make readPreset work
-    public void readPreset(String filename) {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader("presets/" + filename + ".pang"));
-            reader.read();
+    public static byte[] readPreset(String filename) {
+        byte[] bytes = new byte[0];
 
-            reader.close();
+        try {
+            bytes = Files.readAllBytes(Path.of("presets/" + filename + ".pang"));
+
         } catch (IOException e) {
             System.out.println("IO Error, could not read preset from file: " + e.getMessage());
         }
+
+        return bytes;
     }
 
     public String toString() {
