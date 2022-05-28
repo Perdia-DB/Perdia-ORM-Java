@@ -1,4 +1,0 @@
-TYPE "DAY"; 
-NAME "Second" TYPE STRING STARTING "Nothing"; 
-NAME "First" TYPE STRING STARTING "Nothing"; 
-END; 

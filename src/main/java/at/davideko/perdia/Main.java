@@ -16,6 +16,7 @@ public class Main {
         day.addEntry("First", DataType.STRING, "Nothing");
         day.addEntry("Second", DataType.STRING, "Nothing");
         String t = day.toQuery();
+        day.toPreset("day_preset");
 
         QueryObject qobj = new QueryObject("Montag", day);
         String cq = qobj.createQueryObject();

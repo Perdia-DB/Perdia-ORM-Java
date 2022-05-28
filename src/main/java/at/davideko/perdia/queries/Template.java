@@ -1,6 +1,8 @@
 package at.davideko.perdia.queries;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +68,12 @@ public class Template {
 
     public void toPreset(String filename) {
         try {
+            File currentDirFile = new File(".");
+            String helper = currentDirFile.getAbsolutePath();
+
+            if (!Files.exists(Path.of(helper + "/presets"))) {
+                new File( helper + "/presets").mkdir();
+            }
             BufferedWriter writer = new BufferedWriter(new FileWriter("presets/" + filename + ".pang"));
             writer.write(toQuery());
             writer.close();

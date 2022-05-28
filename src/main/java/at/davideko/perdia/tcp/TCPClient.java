@@ -17,6 +17,7 @@ public class TCPClient {
             System.out.println("Host not found: " + e.getMessage());
         } catch (IOException e) {
             System.out.println("IO Error: " + e.getMessage());
+            throw new Error("The socket does not exist");
         }
     }
 
