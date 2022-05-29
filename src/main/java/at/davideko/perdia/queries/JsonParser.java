@@ -32,9 +32,9 @@ public class JsonParser {
                 DataEntry buffer = null;
                 if (currentDynamicValue instanceof String) {
                     buffer = new DataEntry(DataType.STRING);
-                } else if (currentDynamicValue instanceof Long) {
+                } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer) {
                     buffer = new DataEntry(DataType.INTEGER);
-                } else if (currentDynamicValue instanceof Double) {
+                } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float) {
                     buffer = new DataEntry(DataType.FLOAT);
                 } else {
                     throw new AssertionError("Value not accepted");

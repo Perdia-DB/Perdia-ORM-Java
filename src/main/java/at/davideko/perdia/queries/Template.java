@@ -29,6 +29,7 @@ public class Template {
 
     public void addEntry(String name, DataType dt, Object starting) {
         DataEntry entry = new DataEntry(dt);
+        //DataEntry entry = new DataEntry(starting);
         entry.write(starting);
         data.put(name, entry);
     }
@@ -60,6 +61,9 @@ public class Template {
                     } else {
                         r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer + "; \n");
                     }
+                }
+                case UNDEFINED -> {
+                    System.out.println("uh oh");
                 }
             }
         }

@@ -27,7 +27,7 @@ public class QueryObject {
 
                     existingSet.getValue().write(addSet.getValue().read());
 
-                    r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue() + "\"; \n");
+                    r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue().read() + "\"; \n");
                 }
             }
         }
