@@ -23,14 +23,28 @@ public class Template {
     }
 
     public void addEntry(String name, DataType dt) {
-        DataEntry entry = new DataEntry(dt);
+        DataEntry entry = null;
+
+        switch (dt) {
+            case STRING -> entry = new StringDataEntry();
+            case INTEGER -> entry = new LongDataEntry();
+            case FLOAT -> entry = new DoubleDataEntry();
+        }
+
         data.put(name, entry);
     }
 
     public void addEntry(String name, DataType dt, Object starting) {
-        DataEntry entry = new DataEntry(dt);
-        //DataEntry entry = new DataEntry(starting);
+        DataEntry entry = null;
+
+        switch (dt) {
+            case STRING -> entry = new StringDataEntry();
+            case INTEGER -> entry = new LongDataEntry();
+            case FLOAT -> entry = new DoubleDataEntry();
+        }
+
         entry.write(starting);
+
         data.put(name, entry);
     }
 
@@ -40,26 +54,26 @@ public class Template {
         r.append("TYPE \"" + this.type + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
-            switch (set.getValue().type) {
+            switch (set.getValue().getDataType()) {
                 case STRING -> {
-                    if (set.getValue().stringBuffer.equals("")) {
+                    if (set.getValue().value.equals("")) {
                         r.append("NAME \"" + set.getKey() + "\" TYPE STRING; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING STARTING \"" + set.getValue().stringBuffer + "\"; \n");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING STARTING \"" + set.getValue().value + "\"; \n");
                     }
                 }
                 case INTEGER -> {
-                    if (set.getValue().intBuffer == 0) {
+                    if ((Long) set.getValue().value == 0L) {
                         r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().intBuffer + "; \n");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().value + "; \n");
                     }
                 }
                 case FLOAT -> {
-                    if (set.getValue().floatBuffer == 0f) {
+                    if ((Double) set.getValue().value == 0.0) {
                         r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT; \n");
                     } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().floatBuffer + "; \n");
+                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().value + "; \n");
                     }
                 }
                 case UNDEFINED -> {
@@ -94,6 +108,7 @@ public class Template {
 
         try {
             bytes = Files.readAllBytes(Path.of("presets/" + filename + ".pang"));
+
 
         } catch (IOException e) {
             System.out.println("IO Error, could not read preset from file: " + e.getMessage());

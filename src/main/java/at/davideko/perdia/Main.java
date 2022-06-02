@@ -21,9 +21,9 @@ public class Main {
 
         QueryObject qo = new QueryObject("Addition", numbers);
         HashMap<String, DataEntry> hm = new HashMap<>();
-        DataEntry buffer = new DataEntry(DataType.INTEGER, 345734355687L);
+        DataEntry buffer = new LongDataEntry(345734355687L);
         hm.put("First", buffer);
-        buffer = new DataEntry(DataType.INTEGER, 223235768676L);
+        buffer = new LongDataEntry(223235768676L);
         hm.put("Second", buffer);
         System.out.println(qo.createQueryObject());
         client.write(qo.createQueryObject().getBytes(StandardCharsets.UTF_8));
@@ -38,6 +38,15 @@ public class Main {
 
         JsonParser jp = new JsonParser(b);
         System.out.println(jp.getData());
-        System.out.println(jp.getData().get("First").read() + jp.getData().get("Second").read());
+
+
+        HashMap<String, DataEntry> test = new HashMap<>();
+        LongDataEntry foo = new LongDataEntry(25L);
+        DoubleDataEntry bar = new DoubleDataEntry(3.3);
+        test.put("ja", foo);
+        test.put("va", bar);
+
+        System.out.println(test.get("ja").getClass());
+        System.out.println(test.get("va").read().getClass());
     }
 }
