@@ -1,7 +1,7 @@
-package at.davideko.perdia.queries;
+package at.davideko.perdia.queries.data;
 
 public abstract class DataEntry {
-    Object value;
+    public Object value;
     public DataType dt = DataType.UNDEFINED;
 
     public DataEntry() {}

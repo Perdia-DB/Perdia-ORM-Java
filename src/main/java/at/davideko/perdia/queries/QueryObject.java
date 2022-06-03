@@ -1,5 +1,7 @@
 package at.davideko.perdia.queries;
 
+import at.davideko.perdia.queries.data.DataEntry;
+
 import java.util.HashMap;
 import java.util.Map;
 

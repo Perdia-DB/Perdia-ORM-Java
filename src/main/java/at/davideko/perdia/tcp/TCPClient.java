@@ -1,9 +1,9 @@
 package at.davideko.perdia.tcp;
 
+import at.davideko.perdia.crypto.Crypto;
+
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Arrays;
 
 public class TCPClient {
     Socket socket;

@@ -1,5 +1,9 @@
 package at.davideko.perdia.queries;
 
+import at.davideko.perdia.queries.data.DataEntry;
+import at.davideko.perdia.queries.data.DoubleDataEntry;
+import at.davideko.perdia.queries.data.LongDataEntry;
+import at.davideko.perdia.queries.data.StringDataEntry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -1,7 +1,10 @@
 package at.davideko.perdia;
 
 import at.davideko.perdia.queries.*;
-import at.davideko.perdia.tcp.Crypto;
+import at.davideko.perdia.queries.data.DataEntry;
+import at.davideko.perdia.queries.data.DataType;
+import at.davideko.perdia.queries.data.LongDataEntry;
+import at.davideko.perdia.crypto.Crypto;
 import at.davideko.perdia.tcp.TCPClient;
 
 import java.nio.charset.StandardCharsets;

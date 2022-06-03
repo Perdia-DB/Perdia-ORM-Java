@@ -1,6 +1,6 @@
 package at.davideko.perdia.queries;
 
-import at.davideko.perdia.tcp.TCPClient;
+import at.davideko.perdia.queries.data.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
