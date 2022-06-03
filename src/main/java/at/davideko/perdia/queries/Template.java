@@ -120,4 +120,8 @@ public class Template {
     public String toString() {
         return this.type;
     }
+
+    public HashMap<String, DataEntry> getData() {
+        return this.data;
+    }
 }
