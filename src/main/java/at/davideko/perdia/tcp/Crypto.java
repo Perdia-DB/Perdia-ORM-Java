@@ -31,7 +31,7 @@ public class Crypto {
 
     /**
      * Constructor for the Crypto class, in which the AES key gets hashed using the SHA3-Shake128 algorithm and then
-     * stored in an instance variable
+     * stored in an instance variable.
      */
     public Crypto() {
         KeccakSponge sponge = new Shake128();
@@ -46,9 +46,16 @@ public class Crypto {
     }
 
     /**
-     *
-     * @param bytes
-     * @return
+     * Encrypts the given byte array using AES encryption with the hashed key, also adds a buffer of zeroes to the
+     * end of the array so the length becomes a multiple of 16.
+     * @param bytes Byte array to be encrypted
+     * @return Encrypted byte array including the buffer
+     * @exception InvalidKeyException If the key given in the .env file is invalid, an InvalidKeyException is thrown
+     * and caught.
+     * @throws AssertionError An AssertionError gets thrown if any of the following exceptions get thrown and caught:
+     * InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException
+     * or BadPaddingException. This is because the following exceptions are made impossible to be thrown by how the
+     * code is written.
      */
     public byte[] encrypt(byte[] bytes) {
         byte[] encrypted = new byte[0];
@@ -68,22 +75,29 @@ public class Crypto {
 
         } catch (InvalidKeyException e) {
             System.out.println("Invalid Key: " + e.getMessage());
-        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException e) {
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | NoSuchPaddingException |
+                 IllegalBlockSizeException | BadPaddingException e) {
             // This shouldn't be able to happen
             throw new AssertionError(e);
-        } catch (IllegalBlockSizeException e) {
-            System.out.println("Invalid data length: " + e.getMessage());
-        } catch (BadPaddingException e) {
-            System.out.println("Invalid padding: " + e.getMessage());
         }
 
         return encrypted;
     }
 
     /**
-     *
-     * @param bytes
-     * @return
+     * Decrypts the given byte array using AES decryption with the hashed key, also removes the buffer of zeroes at
+     * the end of the array.
+     * @param bytes Byte array to be decrypted
+     * @return Decrypted byte array
+     * @exception BadPaddingException If the padding at the end of the encrypted byte array is incorrect, a
+     * BadPaddingException is thrown and caught.
+     * @exception IllegalBlockSizeException If the length of the encrypted byte array is not a multiple of 16, an
+     * IllegalBlockSizeException is thrown and caught. This may be because of a server-side error.
+     * @exception InvalidKeyException If the key given in the .env file is invalid, an InvalidKeyException is thrown
+     * and caught.
+     * @throws AssertionError An AssertionError gets thrown if any of the following exceptions get thrown and caught:
+     * InvalidAlgorithmParameterException, NoSuchAlgorithmException or NoSuchPaddingException. This is because the
+     * following exceptions are made impossible to be thrown by how the code is written.
      */
     public byte[] decrypt(byte[] bytes) {
         byte[] decrypted = new byte[0];
