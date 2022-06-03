@@ -15,26 +15,41 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+/**
+ * Class for handling the encryption and decryption of queries
+ */
 public class Crypto {
+    // Loading the .env file for the AES key
     Dotenv dotenv = Dotenv.load();
 
+    // Byte array for storing the single characters of the hashed AES key encoded in UTF-8
     private final byte[] pwd;
-    //private final String alg = "AES/CBC/PKCS5Padding";
+    // Specifying which AES algorithm is to be used
     private final String alg = "AES/CBC/NoPadding";
+    // Specifying the IV buffer size
     private final IvParameterSpec ivspec = new IvParameterSpec(new byte[16]);
 
+    /**
+     * Constructor for the Crypto class, in which the AES key gets hashed using the SHA3-Shake128 algorithm and then
+     * stored in an instance variable
+     */
     public Crypto() {
         KeccakSponge sponge = new Shake128();
 
         // Fetching secret Key from the .env file
         sponge.getAbsorbStream().write(dotenv.get("AES_KEY").getBytes(StandardCharsets.UTF_8));
 
-        // Hashing the key
+        // Hashing and storing the key
         byte[] digest = new byte[16];
         sponge.getSqueezeStream().read(digest);
         this.pwd = digest;
     }
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     public byte[] encrypt(byte[] bytes) {
         byte[] encrypted = new byte[0];
 
@@ -42,6 +57,7 @@ public class Crypto {
             Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding");
             SecretKey key = new SecretKeySpec(this.pwd, "AES");
             cipher.init(Cipher.ENCRYPT_MODE, key, ivspec);
+
 
             for (int i = 0; i < bytes.length / 16 + 1; i++) {
                 byte[] chunk = Arrays.copyOfRange(bytes, i*16, 16 + i*16);
@@ -64,6 +80,11 @@ public class Crypto {
         return encrypted;
     }
 
+    /**
+     *
+     * @param bytes
+     * @return
+     */
     public byte[] decrypt(byte[] bytes) {
         byte[] decrypted = new byte[0];
 
