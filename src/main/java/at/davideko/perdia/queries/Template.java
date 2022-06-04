@@ -13,9 +13,13 @@ import java.util.Map;
  * Class for handling the creation, querying and saving of templates
  */
 public class Template {
-    // The type/name of the template
+    /**
+     * The type/name of the template
+     */
     public String type;
-    // Hashmap for the data that the template contains
+    /**
+     * Hashmap for the data that the template contains
+     */
     HashMap<String, DataEntry> data = new HashMap<>();
 
     /**
