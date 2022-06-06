@@ -157,8 +157,9 @@ public class Template {
     }
 
     /**
-     * Returns a PANG query for deleting the respective Template object in the database
-     * @return String containing a PANG query for deleting the respective template
+     * Returns a PANG query for deleting the respective template in the database, automatically deleting all instances
+     * utilising the deleted template at the same time.
+     * @return String containing a PANG query for deleting the respective template (and its instances)
      */
     public String deleteQuery() {
         return "DELETE \"" + this.type + "\" FROM TEMPLATE; \n";

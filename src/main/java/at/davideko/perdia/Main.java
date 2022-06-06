@@ -3,7 +3,6 @@ package at.davideko.perdia;
 import at.davideko.perdia.queries.*;
 import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DataType;
-import at.davideko.perdia.queries.data.LongDataEntry;
 import at.davideko.perdia.crypto.Crypto;
 import at.davideko.perdia.queries.data.StringDataEntry;
 import at.davideko.perdia.tcp.TCPClient;
@@ -15,7 +14,7 @@ import java.util.HashMap;
 public class Main {
 
     public static ArrayList<Template> allTemplates = new ArrayList<>();
-    public static ArrayList<QueryObject> allQueryObjects = new ArrayList<>();
+    public static ArrayList<Instance> allInstances = new ArrayList<>();
 
     public static void main(String[] args) {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
@@ -30,7 +29,7 @@ public class Main {
         System.out.println(day.toQuery());
         client.write(day.toQuery().getBytes(StandardCharsets.UTF_8));
 
-        QueryObject monday = new QueryObject("Monday", day);
+        Instance monday = new Instance("Monday", day);
         System.out.println(monday.createQueryObject(day));
         client.write(monday.createQueryObject(day).getBytes(StandardCharsets.UTF_8));
 
@@ -42,7 +41,7 @@ public class Main {
         System.out.println(monday.writeToQueryObject(hm));
         client.write(monday.writeToQueryObject(hm).getBytes(StandardCharsets.UTF_8));
 
-        QueryObject tuesday = new QueryObject("Tuesday", monday);
+        Instance tuesday = new Instance("Tuesday", monday);
         System.out.println(tuesday.copyQueryObject(monday));
         client.write(tuesday.copyQueryObject(monday).getBytes(StandardCharsets.UTF_8));
 
@@ -58,7 +57,7 @@ public class Main {
         System.out.println(monday.deleteQuery());
         client.write(monday.deleteQuery().getBytes(StandardCharsets.UTF_8));
 
-        monday = new QueryObject("Monday", tuesday);
+        monday = new Instance("Monday", tuesday);
         System.out.println(monday.copyQueryObject(tuesday));
         client.write(monday.copyQueryObject(tuesday).getBytes(StandardCharsets.UTF_8));
     }
