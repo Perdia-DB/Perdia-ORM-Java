@@ -17,6 +17,7 @@ public class Template {
      * The type/name of the template
      */
     public String type;
+
     /**
      * Hashmap for the data that the template contains
      */
@@ -74,13 +75,13 @@ public class Template {
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
             switch (set.getValue().getDataType()) {
                 case STRING -> {
-                    r.append("STRING \"" + set.getKey() + "\" VALUE \"" + set.getValue().value + "\"; \n");
+                    r.append("STRING \"" + set.getKey() + "\" VALUE \"" + set.getValue().read() + "\"; \n");
                 }
                 case INTEGER -> {
-                    r.append("INTEGER \"" + set.getKey() + "\" VALUE " + set.getValue().value + "; \n");
+                    r.append("INTEGER \"" + set.getKey() + "\" VALUE " + set.getValue().read() + "; \n");
                 }
                 case FLOAT -> {
-                    r.append("FLOAT \"" + set.getKey() + "\" VALUE " + set.getValue().value + "; \n");
+                    r.append("FLOAT \"" + set.getKey() + "\" VALUE " + set.getValue().read() + "; \n");
                 }
             }
         }
@@ -90,10 +91,19 @@ public class Template {
         return r.toString();
     }
 
+    /**
+     * Returns a PANG query for querying all currently existing templates in the database
+     * @return String containing a PANG query for querying all existing templates
+     */
     public static String queryAll() {
         return "QUERY TEMPLATE;";
     }
 
+    /**
+     * Saves a .pang File to the /presets folder which contains the current Template object as a PANG query encoded
+     * in UTF-8. This preset file can then be read by the readPreset method.
+     * @param filename Name of the preset file to be saved to (not including the .pang file ending)
+     */
     public void toPreset(String filename) {
         try {
             File currentDirFile = new File(".");
@@ -146,6 +156,10 @@ public class Template {
         return this.data;
     }
 
+    /**
+     * Returns a PANG query for deleting the respective Template object in the database
+     * @return String containing a PANG query for deleting the respective template
+     */
     public String deleteQuery() {
         return "DELETE \"" + this.type + "\" FROM TEMPLATE; \n";
     }
