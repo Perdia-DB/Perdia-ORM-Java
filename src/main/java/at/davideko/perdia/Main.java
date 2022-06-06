@@ -5,6 +5,7 @@ import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DataType;
 import at.davideko.perdia.queries.data.LongDataEntry;
 import at.davideko.perdia.crypto.Crypto;
+import at.davideko.perdia.queries.data.StringDataEntry;
 import at.davideko.perdia.tcp.TCPClient;
 
 import java.nio.charset.StandardCharsets;
@@ -20,47 +21,45 @@ public class Main {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
         Crypto c = new Crypto();
 
-        Template numbers = new Template("NUMBERS");
-        numbers.addEntry("First", DataType.INTEGER, 1L);
-        numbers.addEntry("Second", DataType.INTEGER, 1L);
-        System.out.println(numbers.toQuery());
-        client.write(numbers.toQuery().getBytes(StandardCharsets.UTF_8));
-        allTemplates.add(numbers);
+        Template day = new Template("DAY");
+        day.addEntry("First", DataType.STRING, "Nothing");
+        day.addEntry("Second", DataType.STRING, "Nothing");
+        day.addEntry("Third", DataType.STRING, "Nothing");
+        day.addEntry("Day", DataType.INTEGER, 1);
+        day.addEntry("Seconds", DataType.FLOAT, 0.0);
+        System.out.println(day.toQuery());
+        client.write(day.toQuery().getBytes(StandardCharsets.UTF_8));
 
-        QueryObject qo = new QueryObject("Addition", numbers);
+        QueryObject monday = new QueryObject("Monday", day);
+        System.out.println(monday.createQueryObject(day));
+        client.write(monday.createQueryObject(day).getBytes(StandardCharsets.UTF_8));
+
         HashMap<String, DataEntry> hm = new HashMap<>();
-        DataEntry buffer = new LongDataEntry(345734355687L);
+        DataEntry buffer = new StringDataEntry("Science");
         hm.put("First", buffer);
-        buffer = new LongDataEntry(223235768676L);
+        buffer = new StringDataEntry("CS");
         hm.put("Second", buffer);
-        System.out.println(qo.createQueryObject());
-        client.write(qo.createQueryObject().getBytes(StandardCharsets.UTF_8));
-        System.out.println(qo.writeToQueryObject(hm));
-        client.write(qo.writeToQueryObject(hm).getBytes(StandardCharsets.UTF_8));
-        System.out.println(qo.toQuery());
-        client.write(qo.toQuery().getBytes(StandardCharsets.UTF_8));
-        allQueryObjects.add(qo);
+        System.out.println(monday.writeToQueryObject(hm));
+        client.write(monday.writeToQueryObject(hm).getBytes(StandardCharsets.UTF_8));
 
-        byte[] b = client.read();
-        String s = new String(b, StandardCharsets.UTF_8);
-        System.out.println(s);
+        QueryObject tuesday = new QueryObject("Tuesday", monday);
+        System.out.println(tuesday.copyQueryObject(monday));
+        client.write(tuesday.copyQueryObject(monday).getBytes(StandardCharsets.UTF_8));
 
-        JsonParser jp = new JsonParser(b);
-        System.out.println(jp.getData());
+        System.out.println(tuesday.toQuery());
+        client.write(tuesday.toQuery().getBytes(StandardCharsets.UTF_8));
 
-        QueryObject qoTest = new QueryObject(jp);
-        System.out.println(qoTest.getInstance());
-        System.out.println(qoTest.getData());
+        System.out.println(Template.queryAll());
+        client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
 
-        /*
-        HashMap<String, DataEntry> test = new HashMap<>();
-        LongDataEntry foo = new LongDataEntry(25L);
-        DoubleDataEntry bar = new DoubleDataEntry(3.3);
-        test.put("ja", foo);
-        test.put("va", bar);
+        System.out.println(day.deleteQuery());
+        client.write(day.deleteQuery().getBytes(StandardCharsets.UTF_8));
 
-        System.out.println(test.get("ja").getClass());
-        System.out.println(test.get("va").read().getClass());
-        */
+        System.out.println(monday.deleteQuery());
+        client.write(monday.deleteQuery().getBytes(StandardCharsets.UTF_8));
+
+        monday = new QueryObject("Monday", tuesday);
+        System.out.println(monday.copyQueryObject(tuesday));
+        client.write(monday.copyQueryObject(tuesday).getBytes(StandardCharsets.UTF_8));
     }
 }

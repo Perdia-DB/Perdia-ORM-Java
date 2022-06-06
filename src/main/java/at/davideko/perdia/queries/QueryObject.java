@@ -12,23 +12,40 @@ public class QueryObject {
     Template tmp = null;
     HashMap<String, DataEntry> data = new HashMap<>();
 
+    public QueryObject(String instance) {
+        this.instance = instance;
+    }
+
     public QueryObject(String instance, Template tmp) {
         this.instance = instance;
         this.tmp = tmp;
+    }
+
+    public QueryObject(String instance, QueryObject qo) {
+        this.instance = instance;
+        this.tmp = qo.tmp;
+        this.data = qo.data;
     }
 
     public QueryObject(JsonParser jp) {
         readJSON(jp);
     }
 
-    public String createQueryObject() {
-        return "CREATE \"" + this.instance + "\" TYPE \"" + this.tmp + "\"; \n";
+    public String createQueryObject(Template tmp) {
+        this.tmp = tmp;
+        return "CREATE \"" + this.instance + "\" TEMPLATE \"" + this.tmp.getType() + "\"; \n";
+    }
+
+    public String copyQueryObject(QueryObject qo) {
+        this.tmp = qo.getTemplate();
+        this.data = qo.getData();
+        return "CREATE \"" + this.instance + "\" INSTANCE \"" + qo.getInstance() + "\"; \n";
     }
 
     public String writeToQueryObject(HashMap<String, DataEntry> hm) {
         StringBuilder r = new StringBuilder();
 
-        r.append("QUERY \"" + this.instance + "\" THEN; \n");
+        r.append("SELECT \"" + this.instance + "\"; \n");
 
         for (Map.Entry<String, DataEntry> addSet: hm.entrySet()) {
             for (Map.Entry<String, DataEntry> existingSet: this.tmp.data.entrySet()) {
@@ -43,12 +60,17 @@ public class QueryObject {
             }
         }
 
-        r.append("END; \n");
+        r.append("END \"" + this.instance + "\"; \n");
+
         return r.toString();
     }
 
     public String toQuery() {
-        return "QUERY \"" + this.instance + "\";";
+        return "QUERY \"" + this.instance + "\" FROM INSTANCE;";
+    }
+
+    public static String queryAll() {
+        return "QUERY INSTANCE;";
     }
 
     public void readJSON(JsonParser jp) {
@@ -71,5 +93,9 @@ public class QueryObject {
 
     public HashMap<String, DataEntry> getData() {
         return this.data;
+    }
+
+    public String deleteQuery() {
+        return "DELETE \"" + this.instance + "\" FROM INSTANCE; \n";
     }
 }

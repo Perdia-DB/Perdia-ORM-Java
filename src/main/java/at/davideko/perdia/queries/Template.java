@@ -22,18 +22,6 @@ public class Template {
         this.data = entries;
     }
 
-    public void addEntry(String name, DataType dt) {
-        DataEntry entry = null;
-
-        switch (dt) {
-            case STRING -> entry = new StringDataEntry();
-            case INTEGER -> entry = new LongDataEntry();
-            case FLOAT -> entry = new DoubleDataEntry();
-        }
-
-        data.put(name, entry);
-    }
-
     public void addEntry(String name, DataType dt, Object starting) {
         DataEntry entry = null;
 
@@ -51,40 +39,29 @@ public class Template {
     public String toQuery() {
         StringBuilder r = new StringBuilder();
 
-        r.append("TYPE \"" + this.type + "\"; \n");
+        r.append("TEMPLATE \"" + this.type + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
             switch (set.getValue().getDataType()) {
                 case STRING -> {
-                    if (set.getValue().value.equals("")) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING; \n");
-                    } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE STRING STARTING \"" + set.getValue().value + "\"; \n");
-                    }
+                    r.append("STRING \"" + set.getKey() + "\" VALUE \"" + set.getValue().value + "\"; \n");
                 }
                 case INTEGER -> {
-                    if ((Long) set.getValue().value == 0L) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER; \n");
-                    } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE INTEGER STARTING " + set.getValue().value + "; \n");
-                    }
+                    r.append("INTEGER \"" + set.getKey() + "\" VALUE " + set.getValue().value + "; \n");
                 }
                 case FLOAT -> {
-                    if ((Double) set.getValue().value == 0.0) {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT; \n");
-                    } else {
-                        r.append("NAME \"" + set.getKey() + "\" TYPE FLOAT STARTING " + set.getValue().value + "; \n");
-                    }
-                }
-                case UNDEFINED -> {
-                    System.out.println("uh oh");
+                    r.append("FLOAT \"" + set.getKey() + "\" VALUE " + set.getValue().value + "; \n");
                 }
             }
         }
 
-        r.append("END; \n");
+        r.append("END \"" + this.type + "\"; \n");
 
         return r.toString();
+    }
+
+    public static String queryAll() {
+        return "QUERY TEMPLATE;";
     }
 
     public void toPreset(String filename) {
@@ -117,11 +94,15 @@ public class Template {
         return bytes;
     }
 
-    public String toString() {
+    public String getType() {
         return this.type;
     }
 
     public HashMap<String, DataEntry> getData() {
         return this.data;
+    }
+
+    public String deleteQuery() {
+        return "DELETE \"" + this.type + "\" FROM TEMPLATE; \n";
     }
 }
