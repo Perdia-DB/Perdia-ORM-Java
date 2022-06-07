@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class for handling the creation, querying and saving of templates
+ * Class for handling the creation, querying, deletion and saving of templates
  */
 public class Template {
     /**

@@ -7,6 +7,9 @@ import java.util.Map;
 
 import static at.davideko.perdia.Main.allTemplates;
 
+/**
+ * Class for handling the creation, editing, querying, deletion and saving of instances
+ */
 public class Instance {
     /**
      * The name of the instance
@@ -33,32 +36,73 @@ public class Instance {
         this.name = name;
     }
 
+    /**
+     * One of the constructors for the Instance class. This constructor creates a new instance with a predefined
+     * template. The instance now has all the entries the template has and is ready to be read from or written to.
+     * This constructor essentially does the same as creating an empty instance with the other constructor which only
+     * requires a name and then also runs the createInstance method afterwards as well.
+     * @param name The name of the instance
+     * @param tmp The template the instance is utilising
+     */
     public Instance(String name, Template tmp) {
         this.name = name;
         this.tmp = tmp;
     }
 
+    /**
+     * One of the constructors for the Instance class. This constructor creates a new instance based on an already
+     * existing instance, copying it. The instance now has all the entries with their corresponding values and is ready
+     * to be read from or written to. This constructor essentially does the same as creating an empty instance with the
+     * other constructor which only requires a name and then also runs the copyInstance method afterwards as well.
+     * @param name The name of the instance
+     * @param qo The instance to be copied from
+     */
     public Instance(String name, Instance qo) {
         this.name = name;
         this.tmp = qo.tmp;
         this.data = qo.data;
     }
 
+    /**
+     * One of the constructors for the Instance class. This constructor creates a new instance based on a JSON object
+     * containing all the data contained in an instance.
+     * @param jp
+     */
     public Instance(JsonParser jp) {
         readJSON(jp);
     }
 
-    public String creatInstance(Template tmp) {
+    /**
+     * Creates an instance in the database using a template. It returns a PANG query for creating an
+     * instance using a template.
+     * @param tmp The template to be used for the instance
+     * @return String containing PANG query for creating an instance using a template
+     */
+    public String createInstance(Template tmp) {
         this.tmp = tmp;
         return "CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getType() + "\"; \n";
     }
 
+    /**
+     * Creates an instance in the database using an already existing instance. It returns a PANG query for creating
+     * an instance using another instance, essentially copying it.
+     * @param qo The instance to be copied from
+     * @return String containing PANG query for creating an instance using another instance
+     */
     public String copyInstance(Instance qo) {
         this.tmp = qo.getTemplate();
         this.data = qo.getData();
         return "CREATE \"" + this.name + "\" INSTANCE \"" + qo.getName() + "\"; \n";
     }
 
+    /**
+     * Method used for writing values to the entries of an instance using a hashmap. The hashmap gets checked for
+     * corresponding entries and the value assigned to them, replacing the value of the entry currently stored in
+     * the Instance object with the value from the given hashmap. It returns a PANG query for setting all the
+     * values that have been changed in the Instance object by this method to what they actually are.
+     * @param hm Hashmap the values are supposed to be copied form
+     * @return String containing PANG query setting all the changed values
+     */
     public String writeToQueryObject(HashMap<String, DataEntry> hm) {
         StringBuilder r = new StringBuilder();
 
@@ -82,6 +126,10 @@ public class Instance {
         return r.toString();
     }
 
+    /**
+     * Returns a PANG query for querying the respective instance in the database
+     * @return String containing PANG query for querying the respective instance
+     */
     public String toQuery() {
         return "QUERY \"" + this.name + "\" FROM INSTANCE;";
     }
@@ -94,6 +142,12 @@ public class Instance {
         return "QUERY INSTANCE;";
     }
 
+    // TODO: Add a readJSON method to the Template class
+    /**
+     * Method for copying an existing instance from a JSON object and making it the current respective instance. This
+     * includes the name, template and data of the instance.
+     * @param jp JsonParser object storing the instance in JSON form to be copied from
+     */
     public void readJSON(JsonParser jp) {
         this.name = jp.getInstance();
         this.tmp = allTemplates.stream()
@@ -104,14 +158,26 @@ public class Instance {
         writeToQueryObject(jp.getData());
     }
 
+    /**
+     * Returns the name of the respective instance.
+     * @return The name of the instance
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Returns the template of the respective instance.
+     * @return The template of the instance
+     */
     public Template getTemplate() {
         return this.tmp;
     }
 
+    /**
+     * Returns the data entries of the respective instance all stored in a hashmap.
+     * @return Hashmap containing all the data entries of the instance
+     */
     public HashMap<String, DataEntry> getData() {
         return this.data;
     }
