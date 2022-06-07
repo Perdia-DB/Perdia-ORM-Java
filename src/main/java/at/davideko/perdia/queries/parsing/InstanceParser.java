@@ -9,6 +9,8 @@ import at.davideko.perdia.queries.data.StringDataEntry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -37,19 +39,21 @@ public class InstanceParser {
         this.b = bytes;
 
         String s = new String(b, StandardCharsets.UTF_8);
+        System.out.println(s);
         JSONArray arr = new JSONArray(s);
 
         for (int i = 0; i < arr.length(); i++) {
-            JSONObject obj = (JSONObject) arr.get(i);
+            JSONObject obj = arr.getJSONArray(i).getJSONObject(0);
+            JSONObject inst = obj.getJSONObject("Instance");
 
             this.query.tmp = allTemplates.stream()
-                    .filter(allTemplates -> obj.getString("template").equals(allTemplates.type))
+                    .filter(allTemplates -> inst.getString("template").equals(allTemplates.type))
                     .findAny()
                     .orElse(null);
 
-            this.query.name = obj.getString("instance");
+            this.query.name = inst.getString("name");
 
-            JSONObject data = obj.getJSONObject("data");
+            JSONObject data = inst.getJSONObject("data");
             Iterator<String> keys = data.keys();
             while(keys.hasNext()) {
                 String currentDynamicKey = keys.next();
@@ -58,9 +62,9 @@ public class InstanceParser {
                 DataEntry buffer;
                 if (currentDynamicValue instanceof String) {
                     buffer = new StringDataEntry();
-                } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer) {
+                } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer || currentDynamicValue instanceof BigInteger) {
                     buffer = new LongDataEntry();
-                } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float) {
+                } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float || currentDynamicValue instanceof BigDecimal) {
                     buffer = new DoubleDataEntry();
                 } else {
                     throw new AssertionError("Value not accepted");
@@ -71,6 +75,9 @@ public class InstanceParser {
             }
         }
     }
+
+    // TODO: PARSE MULTIPLE YES?
+    // suggestion: dont put it all in the constructor, make a method for parsing one and one for parsing multiple
 
     /**
      * Returns the parsed Instance object

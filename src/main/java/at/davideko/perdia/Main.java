@@ -7,6 +7,8 @@ import at.davideko.perdia.crypto.Crypto;
 import at.davideko.perdia.queries.data.StringDataEntry;
 import at.davideko.perdia.queries.parsing.InstanceParser;
 import at.davideko.perdia.tcp.TCPClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -64,10 +66,24 @@ public class Main {
         client.write(monday.copyInstance(tuesday).getBytes(StandardCharsets.UTF_8));
         */
 
-        client.write(Instance.toQuery("Monday").getBytes(StandardCharsets.UTF_8));
-        System.out.println(new String(client.read(), StandardCharsets.UTF_8));
-        //InstanceParser ip = new InstanceParser(client.read());
-        //Instance mondayNew = ip.getInstance();
+        client.write(Instance.queryAll().getBytes(StandardCharsets.UTF_8));
+        //System.out.println(new String(client.read(), StandardCharsets.UTF_8));
+        InstanceParser ip = new InstanceParser(client.read());
+        Instance bogus = ip.getInstance();
+        System.out.println(bogus.name);
+
+        //System.out.println(mondayNew.name);
+        //System.out.println(mondayNew.data);
+        //System.out.println(mondayNew.tmp);
+
+        /*
+        client.write(Instance.queryAll().getBytes(StandardCharsets.UTF_8));
+        String s = new String(client.read(), StandardCharsets.UTF_8);
+        s = s.substring(1, s.length()-2);
+        System.out.println(s);
+        JSONArray arr = new JSONArray(s);
+        System.out.println(arr.get(0));
+        */
 
         //System.out.println(mondayNew.getName());
     }

@@ -16,7 +16,7 @@ import java.util.Iterator;
 import static at.davideko.perdia.Main.allTemplates;
 
 /**
- * Class for parsing instance queries in JSON format from the database to Instance objects
+ * Class for parsing template queries in JSON format from the database to Template objects
  */
 public class TemplateParser {
     /**
@@ -25,7 +25,7 @@ public class TemplateParser {
     protected byte[] b;
 
     /**
-     * Instance object the parsed information will be written to
+     * Template object the parsed information will be written to
      */
     public Template query = new Template("temp");
 
@@ -40,7 +40,8 @@ public class TemplateParser {
         JSONArray arr = new JSONArray(s);
 
         for (int i = 0; i < arr.length(); i++) {
-            JSONObject obj = (JSONObject) arr.get(i);
+            JSONObject obj = arr.getJSONArray(i).getJSONObject(0);
+            JSONObject tmp = obj.getJSONObject("Template");
 
             this.query = allTemplates.stream()
                     .filter(allTemplates -> obj.getString("template").equals(allTemplates.type))
