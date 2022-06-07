@@ -30,8 +30,8 @@ public class Main {
         client.write(day.toQuery().getBytes(StandardCharsets.UTF_8));
 
         Instance monday = new Instance("Monday", day);
-        System.out.println(monday.createQueryObject(day));
-        client.write(monday.createQueryObject(day).getBytes(StandardCharsets.UTF_8));
+        System.out.println(monday.createInstance(day));
+        client.write(monday.createInstance(day).getBytes(StandardCharsets.UTF_8));
 
         HashMap<String, DataEntry> hm = new HashMap<>();
         DataEntry buffer = new StringDataEntry("Science");
@@ -42,8 +42,8 @@ public class Main {
         client.write(monday.writeToQueryObject(hm).getBytes(StandardCharsets.UTF_8));
 
         Instance tuesday = new Instance("Tuesday", monday);
-        System.out.println(tuesday.copyQueryObject(monday));
-        client.write(tuesday.copyQueryObject(monday).getBytes(StandardCharsets.UTF_8));
+        System.out.println(tuesday.copyInstance(monday));
+        client.write(tuesday.copyInstance(monday).getBytes(StandardCharsets.UTF_8));
 
         System.out.println(tuesday.toQuery());
         client.write(tuesday.toQuery().getBytes(StandardCharsets.UTF_8));
@@ -58,7 +58,7 @@ public class Main {
         client.write(monday.deleteQuery().getBytes(StandardCharsets.UTF_8));
 
         monday = new Instance("Monday", tuesday);
-        System.out.println(monday.copyQueryObject(tuesday));
-        client.write(monday.copyQueryObject(tuesday).getBytes(StandardCharsets.UTF_8));
+        System.out.println(monday.copyInstance(tuesday));
+        client.write(monday.copyInstance(tuesday).getBytes(StandardCharsets.UTF_8));
     }
 }

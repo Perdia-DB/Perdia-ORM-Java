@@ -68,7 +68,7 @@ public class Instance {
      * containing all the data contained in an instance.
      * @param jp
      */
-    public Instance(JsonParser jp) {
+    public Instance(InstanceParser jp) {
         readJSON(jp);
     }
 
@@ -146,16 +146,12 @@ public class Instance {
     /**
      * Method for copying an existing instance from a JSON object and making it the current respective instance. This
      * includes the name, template and data of the instance.
-     * @param jp JsonParser object storing the instance in JSON form to be copied from
+     * @param parser InstanceParser object storing the instance in JSON form to be copied from
      */
-    public void readJSON(JsonParser jp) {
-        this.name = jp.getInstance();
-        this.tmp = allTemplates.stream()
-                .filter(allTemplates -> jp.getTemplate().equals(allTemplates.type))
-                .findAny()
-                .orElse(null);
-
-        writeToQueryObject(jp.getData());
+    public void readJSON(InstanceParser parser) {
+        this.name = parser.getName();
+        this.tmp = parser.getTemplate();
+        writeToQueryObject(parser.getData());
     }
 
     /**
