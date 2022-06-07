@@ -1,11 +1,10 @@
 package at.davideko.perdia.queries;
 
 import at.davideko.perdia.queries.data.DataEntry;
+import at.davideko.perdia.queries.parsing.InstanceParser;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static at.davideko.perdia.Main.allTemplates;
 
 /**
  * Class for handling the creation, editing, querying, deletion and saving of instances
@@ -14,17 +13,17 @@ public class Instance {
     /**
      * The name of the instance
      */
-    String name = null;
+    public String name = null;
 
     /**
      * The template the instance is utilising
      */
-    Template tmp = null;
+    public Template tmp = null;
 
     /**
      * Hashmap for the data that the instance contains
      */
-    HashMap<String, DataEntry> data = new HashMap<>();
+    public HashMap<String, DataEntry> data = new HashMap<>();
 
     /**
      * One of the constructors for the Instance class. This constructor creates a new instance with only the name
@@ -61,15 +60,6 @@ public class Instance {
         this.name = name;
         this.tmp = qo.tmp;
         this.data = qo.data;
-    }
-
-    /**
-     * One of the constructors for the Instance class. This constructor creates a new instance based on a JSON object
-     * containing all the data contained in an instance.
-     * @param jp
-     */
-    public Instance(InstanceParser jp) {
-        readJSON(jp);
     }
 
     /**
@@ -135,23 +125,19 @@ public class Instance {
     }
 
     /**
+     * Returns a PANG query for querying the given instance based on its name in the database
+     * @return String containing PANG query for querying the given instance based on its name
+     */
+    public static String toQuery(String name) {
+        return "QUERY \"" + name + "\" FROM INSTANCE;";
+    }
+
+    /**
      * Returns a PANG query for querying all currently existing instances in the database
      * @return String containing a PANG query for querying all existing instances
      */
     public static String queryAll() {
         return "QUERY INSTANCE;";
-    }
-
-    // TODO: Add a readJSON method to the Template class
-    /**
-     * Method for copying an existing instance from a JSON object and making it the current respective instance. This
-     * includes the name, template and data of the instance.
-     * @param parser InstanceParser object storing the instance in JSON form to be copied from
-     */
-    public void readJSON(InstanceParser parser) {
-        this.name = parser.getName();
-        this.tmp = parser.getTemplate();
-        writeToQueryObject(parser.getData());
     }
 
     /**

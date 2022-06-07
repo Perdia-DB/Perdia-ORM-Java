@@ -1,5 +1,7 @@
-package at.davideko.perdia.queries;
+package at.davideko.perdia.queries.parsing;
 
+import at.davideko.perdia.queries.Instance;
+import at.davideko.perdia.queries.Template;
 import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DoubleDataEntry;
 import at.davideko.perdia.queries.data.LongDataEntry;
@@ -16,21 +18,22 @@ import static at.davideko.perdia.Main.allTemplates;
 /**
  * Class for parsing instance queries in JSON format from the database to Instance objects
  */
-public class InstanceParser {
+public class TemplateParser {
     /**
      * Byte array containing all the single characters of the original queried JSON object encoded in UTF-8
      */
     protected byte[] b;
+
     /**
      * Instance object the parsed information will be written to
      */
-    public Instance query = new Instance("temp");
+    public Template query = new Template("temp");
 
     /**
      * Constructor in which the parsing takes place
      * @param bytes Byte array containing the single characters of the JSON object to be parsed encoded in UTF-8
      */
-    public InstanceParser(byte[] bytes) {
+    public TemplateParser(byte[] bytes) {
         this.b = bytes;
 
         String s = new String(b, StandardCharsets.UTF_8);
@@ -39,12 +42,12 @@ public class InstanceParser {
         for (int i = 0; i < arr.length(); i++) {
             JSONObject obj = (JSONObject) arr.get(i);
 
-            this.query.tmp = allTemplates.stream()
+            this.query = allTemplates.stream()
                     .filter(allTemplates -> obj.getString("template").equals(allTemplates.type))
                     .findAny()
                     .orElse(null);
 
-            this.query.name = obj.getString("instance");
+            this.query.type = obj.getString("instance");
 
             JSONObject data = obj.getJSONObject("data");
             Iterator<String> keys = data.keys();
@@ -52,7 +55,7 @@ public class InstanceParser {
                 String currentDynamicKey = keys.next();
                 Object currentDynamicValue = data.get(currentDynamicKey);
 
-                DataEntry buffer = null;
+                DataEntry buffer;
                 if (currentDynamicValue instanceof String) {
                     buffer = new StringDataEntry();
                 } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer) {
@@ -70,35 +73,11 @@ public class InstanceParser {
     }
 
     /**
-     * Returns the parsed Instance object
-     * @return The parsed Instance object
-     */
-    public Instance getInstance() {
-        return this.query;
-    }
-
-    /**
-     * Returns the template the parsed instance is utilising
-     * @return The template of the parsed instance
+     * Returns the parsed Template object
+     * @return The parsed Template object
      */
     public Template getTemplate() {
-        return this.query.tmp;
-    }
-
-    /**
-     * Returns the name of the parsed instance as a String
-     * @return The name of the parsed instance
-     */
-    public String getName() {
-        return this.query.name;
-    }
-
-    /**
-     * Returns a hashmap containing all the entries of the parsed instance
-     * @return Hashmap containing all the entries
-     */
-    public HashMap<String, DataEntry> getData() {
-        return this.query.data;
+        return this.query;
     }
 }
 

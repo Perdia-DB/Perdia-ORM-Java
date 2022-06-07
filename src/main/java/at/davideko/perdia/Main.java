@@ -5,6 +5,7 @@ import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DataType;
 import at.davideko.perdia.crypto.Crypto;
 import at.davideko.perdia.queries.data.StringDataEntry;
+import at.davideko.perdia.queries.parsing.InstanceParser;
 import at.davideko.perdia.tcp.TCPClient;
 
 import java.nio.charset.StandardCharsets;
@@ -20,14 +21,15 @@ public class Main {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
         Crypto c = new Crypto();
 
+        /*
         Template day = new Template("DAY");
         day.addEntry("First", DataType.STRING, "Nothing");
         day.addEntry("Second", DataType.STRING, "Nothing");
         day.addEntry("Third", DataType.STRING, "Nothing");
         day.addEntry("Day", DataType.INTEGER, 1);
         day.addEntry("Seconds", DataType.FLOAT, 0.0);
-        System.out.println(day.toQuery());
-        client.write(day.toQuery().getBytes(StandardCharsets.UTF_8));
+        System.out.println(day.toCreationQuery());
+        client.write(day.toCreationQuery().getBytes(StandardCharsets.UTF_8));
 
         Instance monday = new Instance("Monday", day);
         System.out.println(monday.createInstance(day));
@@ -60,5 +62,13 @@ public class Main {
         monday = new Instance("Monday", tuesday);
         System.out.println(monday.copyInstance(tuesday));
         client.write(monday.copyInstance(tuesday).getBytes(StandardCharsets.UTF_8));
+        */
+
+        client.write(Instance.toQuery("Monday").getBytes(StandardCharsets.UTF_8));
+        System.out.println(new String(client.read(), StandardCharsets.UTF_8));
+        //InstanceParser ip = new InstanceParser(client.read());
+        //Instance mondayNew = ip.getInstance();
+
+        //System.out.println(mondayNew.getName());
     }
 }

@@ -21,7 +21,7 @@ public class Template {
     /**
      * Hashmap for the data that the template contains
      */
-    HashMap<String, DataEntry> data = new HashMap<>();
+    public HashMap<String, DataEntry> data = new HashMap<>();
 
     /**
      * One of the constructors for the Template class. This constructor creates a new empty template with only the
@@ -67,7 +67,7 @@ public class Template {
      * Turns the current Template object in to a PANG query which creates the template in the database
      * @return String containing a PANG query for creating the template
      */
-    public String toQuery() {
+    public String toCreationQuery() {
         StringBuilder r = new StringBuilder();
 
         r.append("TEMPLATE \"" + this.type + "\"; \n");
@@ -89,6 +89,22 @@ public class Template {
         r.append("END \"" + this.type + "\"; \n");
 
         return r.toString();
+    }
+
+    /**
+     * Returns a PANG query for querying the respective template in the database
+     * @return String containing PANG query for querying the respective template
+     */
+    public String toQuery() {
+        return "QUERY \"" + this.type + "\" FROM TEMPLATE;";
+    }
+
+    /**
+     * Returns a PANG query for querying the given template based on its name in the database
+     * @return String containing PANG query for querying the given template based on its name
+     */
+    public static String toQuery(String type) {
+        return "QUERY \"" + type + "\" FROM TEMPLATE;";
     }
 
     /**
