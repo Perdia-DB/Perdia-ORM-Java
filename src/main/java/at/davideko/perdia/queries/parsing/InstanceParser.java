@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static at.davideko.perdia.Main.allTemplates;
+import static at.davideko.perdia.queries.storage.AllTemplates.allTemplates;
 
 /**
  * Class for parsing instance queries in JSON format from the database to Instance objects
@@ -88,7 +88,6 @@ public class InstanceParser {
                 .filter(allTemplates -> inst.getString("template").equals(allTemplates.getName()))
                 .findAny()
                 .orElse(null);
-
 
         query.name = inst.getString("name");
 

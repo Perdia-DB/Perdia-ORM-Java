@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import static at.davideko.perdia.Main.allTemplates;
-
 /**
  * Class for parsing template queries in JSON format from the database to Template objects
  */
@@ -47,7 +45,7 @@ public class TemplateParser {
     }
 
     /**
-     * Parses the JSON object at the given index in the JSON array to an Template object
+     * Parses the JSON object at the given index in the JSON array to a Template object
      * @param index The index of the JSON object to be parsed
      * @return The parsed Template object
      */

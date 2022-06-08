@@ -17,13 +17,9 @@ import java.util.HashMap;
 
 public class Main {
 
-    public static ArrayList<Template> allTemplates = new ArrayList<>();
-    public static ArrayList<Instance> allInstances = new ArrayList<>();
-
     public static void main(String[] args) {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
 
-        /*
         Template day = new Template("DAY");
         day.addEntry("First", DataType.STRING, "Nothing");
         day.addEntry("Second", DataType.STRING, "Nothing");
@@ -64,8 +60,9 @@ public class Main {
         monday = new Instance("Monday", tuesday);
         System.out.println(monday.copyInstance(tuesday));
         client.write(monday.copyInstance(tuesday).getBytes(StandardCharsets.UTF_8));
-        */
 
+
+        /*
         client.write(Instance.queryAll().getBytes(StandardCharsets.UTF_8));
         //System.out.println(new String(client.read(), StandardCharsets.UTF_8));
         InstanceParser ip = new InstanceParser(client.read());
@@ -74,6 +71,7 @@ public class Main {
         System.out.println(al.get(1).getName());
         System.out.println(ip.instanceAmount());
         System.out.println(ip);
+        */
 
         //System.out.println(mondayNew.name);
         //System.out.println(mondayNew.data);

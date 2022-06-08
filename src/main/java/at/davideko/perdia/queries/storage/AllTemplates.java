@@ -21,7 +21,7 @@ public class AllTemplates {
         client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
 
         TemplateParser tp = new TemplateParser(client.read());
-        
+        allTemplates = tp.parseMultiple();
     }
 
     public static ArrayList<Template> get() {
