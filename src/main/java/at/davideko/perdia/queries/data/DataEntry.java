@@ -8,7 +8,7 @@ public abstract class DataEntry {
      * Variable storing the data of the respective DataEntry. It is of type Object because it has to house Strings,
      * Longs and Doubles.
      */
-    Object value;
+    private Object value;
 
     /**
      * Constructor which doesn't do anything other than create a new DataEntry Object.

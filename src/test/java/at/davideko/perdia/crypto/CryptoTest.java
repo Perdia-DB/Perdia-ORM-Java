@@ -12,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * are very simple on purpose, since there is no predictable outcome that is the same each time
  */
 class CryptoTest {
-    Crypto c = new Crypto();
-    byte[] testBytes = {1, 2, 3, 4};
+    private final Crypto c = new Crypto();
+    private final byte[] testBytes = {1, 2, 3, 4};
 
     @Test
     void encryptionTest() {
