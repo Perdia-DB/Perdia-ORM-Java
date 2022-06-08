@@ -73,6 +73,7 @@ public class Main {
         System.out.println(al.get(0).getName());
         System.out.println(al.get(1).getName());
         System.out.println(ip.instanceAmount());
+        System.out.println(ip);
 
         //System.out.println(mondayNew.name);
         //System.out.println(mondayNew.data);
@@ -87,11 +88,11 @@ public class Main {
         System.out.println(arr.get(0));
         */
 
-        client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
+        //client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
         //System.out.println(new String(client.read(), StandardCharsets.UTF_8));
-        TemplateParser tp = new TemplateParser(client.read());
-        System.out.println(tp.templateAmount());
-        System.out.println(tp.parseSingle().getData());
+        //TemplateParser tp = new TemplateParser(client.read());
+        //System.out.println(tp.templateAmount());
+        //System.out.println(tp.parseSingle().getData());
 
         //System.out.println(mondayNew.getName());
     }

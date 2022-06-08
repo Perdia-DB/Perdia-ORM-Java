@@ -23,7 +23,7 @@ import static at.davideko.perdia.Main.allTemplates;
  */
 public class TemplateParser {
     /**
-     * Byte array containing all the single characters of the original queried JSON object encoded in UTF-8
+     * JSON array containing all the template JSON objects to be parsed
      */
     private final JSONArray templateArray;
 
@@ -36,18 +36,31 @@ public class TemplateParser {
         this.templateArray = arr.getJSONArray(0);
     }
 
+    /**
+     * Parses the first JSON object present in the JSON array to a Template object
+     * @return The parsed Template object
+     */
     public Template parseSingle() {
         JSONObject obj = templateArray.getJSONObject(0);
 
         return parse(obj);
     }
 
+    /**
+     * Parses the JSON object at the given index in the JSON array to an Template object
+     * @param index The index of the JSON object to be parsed
+     * @return The parsed Template object
+     */
     public Template parseSingle(int index) {
         JSONObject obj = templateArray.getJSONObject(index);
 
         return parse(obj);
     }
 
+    /**
+     * Parses all the JSON objects in the JSON array to Template objects in an ArrayList
+     * @return ArrayList containing all the parsed Template objects
+     */
     public ArrayList<Template> parseMultiple() {
         ArrayList<Template> r = new ArrayList<>();
 
@@ -60,6 +73,12 @@ public class TemplateParser {
         return r;
     }
 
+    /**
+     * Internal method which actually does all the parsing, all the other methods just determine what and how much
+     * gets parsed
+     * @param obj The JSON object to be parsed to an Template object
+     * @return The parsed Template object
+     */
     private Template parse(JSONObject obj) {
         JSONObject inst = obj.getJSONObject("Template");
         Template query = new Template("temp");
@@ -90,8 +109,20 @@ public class TemplateParser {
         return query;
     }
 
+    /**
+     * Returns the amount of JSON objects in the JSON array
+     * @return Amount of JSON objects in the JSON array
+     */
     public int templateAmount() {
         return this.templateArray.length();
+    }
+
+    /**
+     * Returns the JSON array as a String (with indentation)
+     * @return JSON array as a String
+     */
+    public String toString() {
+        return this.templateArray.toString(3);
     }
 }
 
