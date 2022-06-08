@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -22,69 +23,89 @@ import static at.davideko.perdia.Main.allTemplates;
  */
 public class InstanceParser {
     /**
-     * Byte array containing all the single characters of the original queried JSON object encoded in UTF-8
+     * JSON array containing all the instance JSON objects to be parsed
      */
-    protected byte[] b;
+    private final JSONArray instanceArray;
 
     /**
-     * Instance object the parsed information will be written to
-     */
-    public Instance query = new Instance("temp");
-
-    /**
-     * Constructor in which the parsing takes place
-     * @param bytes Byte array containing the single characters of the JSON object to be parsed encoded in UTF-8
+     * Constructor in which the byte array turns in to a JSON array which then gets processes further
+     * @param bytes Byte array containing the single characters of the JSON objects to be parsed encoded in UTF-8
      */
     public InstanceParser(byte[] bytes) {
-        this.b = bytes;
-
-        String s = new String(b, StandardCharsets.UTF_8);
-        System.out.println(s);
-        JSONArray arr = new JSONArray(s);
-
-        for (int i = 0; i < arr.length(); i++) {
-            JSONObject obj = arr.getJSONArray(i).getJSONObject(0);
-            JSONObject inst = obj.getJSONObject("Instance");
-
-            this.query.tmp = allTemplates.stream()
-                    .filter(allTemplates -> inst.getString("template").equals(allTemplates.type))
-                    .findAny()
-                    .orElse(null);
-
-            this.query.name = inst.getString("name");
-
-            JSONObject data = inst.getJSONObject("data");
-            Iterator<String> keys = data.keys();
-            while(keys.hasNext()) {
-                String currentDynamicKey = keys.next();
-                Object currentDynamicValue = data.get(currentDynamicKey);
-
-                DataEntry buffer;
-                if (currentDynamicValue instanceof String) {
-                    buffer = new StringDataEntry();
-                } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer || currentDynamicValue instanceof BigInteger) {
-                    buffer = new LongDataEntry();
-                } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float || currentDynamicValue instanceof BigDecimal) {
-                    buffer = new DoubleDataEntry();
-                } else {
-                    throw new AssertionError("Value not accepted");
-                }
-
-                buffer.write(currentDynamicValue);
-                this.query.data.put(currentDynamicKey, buffer);
-            }
-        }
+        JSONArray arr = new JSONArray(new String(bytes, StandardCharsets.UTF_8));
+        this.instanceArray = arr.getJSONArray(0);
     }
 
-    // TODO: PARSE MULTIPLE YES?
-    // suggestion: dont put it all in the constructor, make a method for parsing one and one for parsing multiple
+    /**
+     *
+     * @return
+     */
+    public Instance parseSingle() {
+        JSONObject obj = instanceArray.getJSONObject(0);
+
+        return parse(obj);
+    }
 
     /**
-     * Returns the parsed Instance object
-     * @return The parsed Instance object
+     *
+     * @param index
+     * @return
      */
-    public Instance getInstance() {
-        return this.query;
+    public Instance parseSingle(int index) {
+        JSONObject obj = instanceArray.getJSONObject(index);
+
+        return parse(obj);
+    }
+
+    public ArrayList<Instance> parseMultiple() {
+        ArrayList<Instance> r = new ArrayList<>();
+
+        for (int i = 0; i < instanceArray.length(); i++) {
+            JSONObject obj = instanceArray.getJSONObject(i);
+
+            r.add(parse(obj));
+        }
+
+        return r;
+    }
+
+    private Instance parse(JSONObject obj) {
+        JSONObject inst = obj.getJSONObject("Instance");
+        Instance query = new Instance("temp");
+
+        query.tmp = allTemplates.stream()
+                .filter(allTemplates -> inst.getString("template").equals(allTemplates.getName()))
+                .findAny()
+                .orElse(null);
+
+        query.name = inst.getString("name");
+
+        JSONObject data = inst.getJSONObject("data");
+        Iterator<String> keys = data.keys();
+        while(keys.hasNext()) {
+            String currentDynamicKey = keys.next();
+            Object currentDynamicValue = data.get(currentDynamicKey);
+
+            DataEntry buffer;
+            if (currentDynamicValue instanceof String) {
+                buffer = new StringDataEntry();
+            } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer || currentDynamicValue instanceof BigInteger) {
+                buffer = new LongDataEntry();
+            } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float || currentDynamicValue instanceof BigDecimal) {
+                buffer = new DoubleDataEntry();
+            } else {
+                throw new AssertionError("Value not accepted");
+            }
+
+            buffer.write(currentDynamicValue);
+            query.data.put(currentDynamicKey, buffer);
+        }
+
+        return query;
+    }
+
+    public int instanceAmount() {
+        return this.instanceArray.length();
     }
 }
 

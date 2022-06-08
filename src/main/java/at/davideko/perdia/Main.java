@@ -6,6 +6,7 @@ import at.davideko.perdia.queries.data.DataType;
 import at.davideko.perdia.crypto.Crypto;
 import at.davideko.perdia.queries.data.StringDataEntry;
 import at.davideko.perdia.queries.parsing.InstanceParser;
+import at.davideko.perdia.queries.parsing.TemplateParser;
 import at.davideko.perdia.tcp.TCPClient;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,7 +22,6 @@ public class Main {
 
     public static void main(String[] args) {
 	    TCPClient client = new TCPClient("127.0.0.1", 3000);
-        Crypto c = new Crypto();
 
         /*
         Template day = new Template("DAY");
@@ -55,8 +55,8 @@ public class Main {
         System.out.println(Template.queryAll());
         client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
 
-        System.out.println(day.deleteQuery());
-        client.write(day.deleteQuery().getBytes(StandardCharsets.UTF_8));
+        //System.out.println(day.deleteQuery());
+        //client.write(day.deleteQuery().getBytes(StandardCharsets.UTF_8));
 
         System.out.println(monday.deleteQuery());
         client.write(monday.deleteQuery().getBytes(StandardCharsets.UTF_8));
@@ -69,8 +69,10 @@ public class Main {
         client.write(Instance.queryAll().getBytes(StandardCharsets.UTF_8));
         //System.out.println(new String(client.read(), StandardCharsets.UTF_8));
         InstanceParser ip = new InstanceParser(client.read());
-        Instance bogus = ip.getInstance();
-        System.out.println(bogus.name);
+        ArrayList<Instance> al = ip.parseMultiple();
+        System.out.println(al.get(0).getName());
+        System.out.println(al.get(1).getName());
+        System.out.println(ip.instanceAmount());
 
         //System.out.println(mondayNew.name);
         //System.out.println(mondayNew.data);
@@ -84,6 +86,12 @@ public class Main {
         JSONArray arr = new JSONArray(s);
         System.out.println(arr.get(0));
         */
+
+        client.write(Template.queryAll().getBytes(StandardCharsets.UTF_8));
+        //System.out.println(new String(client.read(), StandardCharsets.UTF_8));
+        TemplateParser tp = new TemplateParser(client.read());
+        System.out.println(tp.templateAmount());
+        System.out.println(tp.parseSingle().getData());
 
         //System.out.println(mondayNew.getName());
     }

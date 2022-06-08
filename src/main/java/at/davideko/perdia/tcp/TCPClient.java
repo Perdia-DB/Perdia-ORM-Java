@@ -16,7 +16,6 @@ public class TCPClient {
 
     /**
      * Constructor for the TCPClient class
-     *
      * @param host The hostname or IP-address of the server
      * @param port The port on the server the client is supposed to connect to
      */

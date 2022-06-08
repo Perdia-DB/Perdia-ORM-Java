@@ -9,7 +9,10 @@ import at.davideko.perdia.queries.data.StringDataEntry;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -22,63 +25,73 @@ public class TemplateParser {
     /**
      * Byte array containing all the single characters of the original queried JSON object encoded in UTF-8
      */
-    protected byte[] b;
-
-    /**
-     * Template object the parsed information will be written to
-     */
-    public Template query = new Template("temp");
+    private final JSONArray templateArray;
 
     /**
      * Constructor in which the parsing takes place
      * @param bytes Byte array containing the single characters of the JSON object to be parsed encoded in UTF-8
      */
     public TemplateParser(byte[] bytes) {
-        this.b = bytes;
-
-        String s = new String(b, StandardCharsets.UTF_8);
-        JSONArray arr = new JSONArray(s);
-
-        for (int i = 0; i < arr.length(); i++) {
-            JSONObject obj = arr.getJSONArray(i).getJSONObject(0);
-            JSONObject tmp = obj.getJSONObject("Template");
-
-            this.query = allTemplates.stream()
-                    .filter(allTemplates -> obj.getString("template").equals(allTemplates.type))
-                    .findAny()
-                    .orElse(null);
-
-            this.query.type = obj.getString("instance");
-
-            JSONObject data = obj.getJSONObject("data");
-            Iterator<String> keys = data.keys();
-            while(keys.hasNext()) {
-                String currentDynamicKey = keys.next();
-                Object currentDynamicValue = data.get(currentDynamicKey);
-
-                DataEntry buffer;
-                if (currentDynamicValue instanceof String) {
-                    buffer = new StringDataEntry();
-                } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer) {
-                    buffer = new LongDataEntry();
-                } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float) {
-                    buffer = new DoubleDataEntry();
-                } else {
-                    throw new AssertionError("Value not accepted");
-                }
-
-                buffer.write(currentDynamicValue);
-                this.query.data.put(currentDynamicKey, buffer);
-            }
-        }
+        JSONArray arr = new JSONArray(new String(bytes, StandardCharsets.UTF_8));
+        this.templateArray = arr.getJSONArray(0);
     }
 
-    /**
-     * Returns the parsed Template object
-     * @return The parsed Template object
-     */
-    public Template getTemplate() {
-        return this.query;
+    public Template parseSingle() {
+        JSONObject obj = templateArray.getJSONObject(0);
+
+        return parse(obj);
+    }
+
+    public Template parseSingle(int index) {
+        JSONObject obj = templateArray.getJSONObject(index);
+
+        return parse(obj);
+    }
+
+    public ArrayList<Template> parseMultiple() {
+        ArrayList<Template> r = new ArrayList<>();
+
+        for (int i = 0; i < templateArray.length(); i++) {
+            JSONObject obj = templateArray.getJSONObject(i);
+
+            r.add(parse(obj));
+        }
+
+        return r;
+    }
+
+    private Template parse(JSONObject obj) {
+        JSONObject inst = obj.getJSONObject("Template");
+        Template query = new Template("temp");
+
+        query.name = inst.getString("name");
+
+        JSONObject data = inst.getJSONObject("data");
+        Iterator<String> keys = data.keys();
+        while(keys.hasNext()) {
+            String currentDynamicKey = keys.next();
+            Object currentDynamicValue = data.get(currentDynamicKey);
+
+            DataEntry buffer;
+            if (currentDynamicValue instanceof String) {
+                buffer = new StringDataEntry();
+            } else if (currentDynamicValue instanceof Long || currentDynamicValue instanceof Integer || currentDynamicValue instanceof BigInteger) {
+                buffer = new LongDataEntry();
+            } else if (currentDynamicValue instanceof Double || currentDynamicValue instanceof Float || currentDynamicValue instanceof BigDecimal) {
+                buffer = new DoubleDataEntry();
+            } else {
+                throw new AssertionError("Value not accepted");
+            }
+
+            buffer.write(currentDynamicValue);
+            query.data.put(currentDynamicKey, buffer);
+        }
+
+        return query;
+    }
+
+    public int templateAmount() {
+        return this.templateArray.length();
     }
 }
 

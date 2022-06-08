@@ -70,7 +70,7 @@ public class Instance {
      */
     public String createInstance(Template tmp) {
         this.tmp = tmp;
-        return "CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getType() + "\"; \n";
+        return "CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n";
     }
 
     /**

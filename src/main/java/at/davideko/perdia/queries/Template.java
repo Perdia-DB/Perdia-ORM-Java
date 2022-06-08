@@ -14,9 +14,9 @@ import java.util.Map;
  */
 public class Template {
     /**
-     * The type/name of the template
+     * The name of the template
      */
-    public String type;
+    public String name;
 
     /**
      * Hashmap for the data that the template contains
@@ -28,18 +28,18 @@ public class Template {
      * name given.
      * @param type The type/name of the template
      */
-    public Template(String type) {
-        this.type = type;
+    public Template(String name) {
+        this.name = name;
     }
 
     /**
      * One of the constructors for the Template class. This constructor not only creates a new template with the
      * given name, but also adds all the entries in the given Hashmap as entries of the template.
-     * @param type The type/name of the template
+     * @param name The name of the template
      * @param entries Hashmap of entries that will be added to the preset
      */
-    public Template(String type, HashMap<String, DataEntry> entries) {
-        this.type = type;
+    public Template(String name, HashMap<String, DataEntry> entries) {
+        this.name = name;
         this.data = entries;
     }
 
@@ -70,7 +70,7 @@ public class Template {
     public String toCreationQuery() {
         StringBuilder r = new StringBuilder();
 
-        r.append("TEMPLATE \"" + this.type + "\"; \n");
+        r.append("TEMPLATE \"" + this.name + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
             switch (set.getValue().getDataType()) {
@@ -86,7 +86,7 @@ public class Template {
             }
         }
 
-        r.append("END \"" + this.type + "\"; \n");
+        r.append("END \"" + this.name + "\"; \n");
 
         return r.toString();
     }
@@ -96,7 +96,7 @@ public class Template {
      * @return String containing PANG query for querying the respective template
      */
     public String toQuery() {
-        return "QUERY \"" + this.type + "\" FROM TEMPLATE;";
+        return "QUERY \"" + this.name + "\" FROM TEMPLATE;";
     }
 
     /**
@@ -157,11 +157,11 @@ public class Template {
     }
 
     /**
-     * Returns the template type/name as a String.
-     * @return The template type/name
+     * Returns the template name as a String.
+     * @return The template name
      */
-    public String getType() {
-        return this.type;
+    public String getName() {
+        return this.name;
     }
 
     /**
@@ -178,6 +178,6 @@ public class Template {
      * @return String containing a PANG query for deleting the respective template (and its instances)
      */
     public String deleteQuery() {
-        return "DELETE \"" + this.type + "\" FROM TEMPLATE; \n";
+        return "DELETE \"" + this.name + "\" FROM TEMPLATE; \n";
     }
 }
