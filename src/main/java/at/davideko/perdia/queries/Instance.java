@@ -1,7 +1,6 @@
 package at.davideko.perdia.queries;
 
 import at.davideko.perdia.queries.data.DataEntry;
-import at.davideko.perdia.queries.parsing.InstanceParser;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,7 +1,6 @@
 package at.davideko.perdia.queries.parsing;
 
 import at.davideko.perdia.queries.Instance;
-import at.davideko.perdia.queries.Template;
 import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DoubleDataEntry;
 import at.davideko.perdia.queries.data.LongDataEntry;
@@ -13,7 +12,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 
 import static at.davideko.perdia.queries.storage.AllTemplates.allTemplates;

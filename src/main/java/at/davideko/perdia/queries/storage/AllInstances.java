@@ -1,9 +1,7 @@
 package at.davideko.perdia.queries.storage;
 
 import at.davideko.perdia.queries.Instance;
-import at.davideko.perdia.queries.Template;
 import at.davideko.perdia.queries.parsing.InstanceParser;
-import at.davideko.perdia.queries.parsing.TemplateParser;
 import at.davideko.perdia.tcp.TCPClient;
 
 import java.nio.charset.StandardCharsets;

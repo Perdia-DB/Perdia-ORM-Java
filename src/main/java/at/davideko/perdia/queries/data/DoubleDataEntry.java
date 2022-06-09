@@ -1,8 +1,5 @@
 package at.davideko.perdia.queries.data;
 
-import at.davideko.perdia.queries.data.DataEntry;
-import at.davideko.perdia.queries.data.DataType;
-
 /**
  * Class extending from the abstract DataEntry class which stores Doubles respectively.
  */
