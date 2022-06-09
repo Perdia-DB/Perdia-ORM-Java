@@ -46,6 +46,7 @@ public class Instance {
     public Instance(String name, Template tmp) {
         this.name = name;
         this.tmp = tmp;
+        this.data = tmp.getData();
     }
 
     /**
