@@ -38,8 +38,8 @@ public class Main {
         hm.put("First", buffer);
         buffer = new StringDataEntry("CS");
         hm.put("Second", buffer);
-        System.out.println(monday.writeToQueryObject(hm));
-        client.write(monday.writeToQueryObject(hm).getBytes(StandardCharsets.UTF_8));
+        System.out.println(monday.setData(hm));
+        client.write(monday.setData(hm).getBytes(StandardCharsets.UTF_8));
 
         Instance tuesday = new Instance("Tuesday", monday);
         System.out.println(tuesday.copyInstance(monday));

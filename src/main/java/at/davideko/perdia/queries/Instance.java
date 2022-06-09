@@ -94,7 +94,7 @@ public class Instance {
      * @param hm Hashmap the values are supposed to be copied form
      * @return String containing PANG query setting all the changed values
      */
-    public String writeToQueryObject(HashMap<String, DataEntry> hm) {
+    public String setData(HashMap<String, DataEntry> hm) {
         StringBuilder r = new StringBuilder();
 
         r.append("SELECT \"" + this.name + "\"; \n");
@@ -127,7 +127,7 @@ public class Instance {
      * @param de DataEntry to be written to the data entry with the corresponding key
      * @return String containing PANG query setting the changed value
      */
-    public String writeToQueryObject(String key, DataEntry de) {
+    public String setData(String key, DataEntry de) {
         StringBuilder r = new StringBuilder();
 
         r.append("SELECT \"" + this.name + "\"; \n");

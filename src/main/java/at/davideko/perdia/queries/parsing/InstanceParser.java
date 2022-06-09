@@ -109,7 +109,7 @@ public class InstanceParser {
             }
 
             buffer.write(currentDynamicValue);
-            query.writeToQueryObject(currentDynamicKey, buffer);
+            query.setData(currentDynamicKey, buffer);
         }
 
         return query;
