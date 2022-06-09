@@ -81,7 +81,7 @@ public class TemplateParser {
         JSONObject inst = obj.getJSONObject("Template");
         Template query = new Template("temp");
 
-        query.name = inst.getString("name");
+        query.setName(inst.getString("name"));
 
         JSONObject data = inst.getJSONObject("data");
         Iterator<String> keys = data.keys();
@@ -101,7 +101,7 @@ public class TemplateParser {
             }
 
             buffer.write(currentDynamicValue);
-            query.data.put(currentDynamicKey, buffer);
+            query.addEntry(currentDynamicKey, buffer);
         }
 
         return query;

@@ -16,17 +16,17 @@ public class Template {
     /**
      * The name of the template
      */
-    public String name;
+    private String name;
 
     /**
      * Hashmap for the data that the template contains
      */
-    public HashMap<String, DataEntry> data = new HashMap<>();
+    private HashMap<String, DataEntry> data = new HashMap<>();
 
     /**
      * One of the constructors for the Template class. This constructor creates a new empty template with only the
      * name given.
-     * @param type The type/name of the template
+     * @param name The name of the template
      */
     public Template(String name) {
         this.name = name;
@@ -64,6 +64,23 @@ public class Template {
     }
 
     /**
+     * Adds an entry with the given name and data entry (which includes a datatype and starting value) to the template.
+     * @param name Name of the entry
+     * @param entry DataEntry containing the datatype and value of the entry
+     */
+    public void addEntry(String name, DataEntry entry) {
+        data.put(name, entry);
+    }
+
+    /**
+     * Adds all the entries contained in the given hashmap to the template.
+     * @param hm Hashmap the values are supposed to be added from
+     */
+    public void addEntries(HashMap<String, DataEntry> hm) {
+        data.putAll(hm);
+    }
+
+    /**
      * Turns the current Template object in to a PANG query which creates the template in the database
      * @return String containing a PANG query for creating the template
      */
@@ -96,7 +113,7 @@ public class Template {
      * @return String containing PANG query for querying the respective template
      */
     public String toQuery() {
-        return "QUERY \"" + this.name + "\" FROM TEMPLATE;";
+        return "QUERY \"" + this.name + "\" FROM TEMPLATE; \n";
     }
 
     /**
@@ -104,7 +121,7 @@ public class Template {
      * @return String containing PANG query for querying the given template based on its name
      */
     public static String toQuery(String type) {
-        return "QUERY \"" + type + "\" FROM TEMPLATE;";
+        return "QUERY \"" + type + "\" FROM TEMPLATE; \n";
     }
 
     /**
@@ -112,7 +129,7 @@ public class Template {
      * @return String containing a PANG query for querying all existing templates
      */
     public static String queryAll() {
-        return "QUERY TEMPLATE;";
+        return "QUERY TEMPLATE; \n";
     }
 
     /**
@@ -157,11 +174,19 @@ public class Template {
     }
 
     /**
-     * Returns the template name as a String.
-     * @return The template name
+     * Returns the name of the respective template.
+     * @return The name of the template
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Sets the name of the respective template.
+     * @param name The name of the template to be set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -170,6 +195,14 @@ public class Template {
      */
     public HashMap<String, DataEntry> getData() {
         return this.data;
+    }
+
+    /**
+     * Returns the data entry with the given key of the template.
+     * @return DataEntry corresponding to the key in the data Hashmap
+     */
+    public DataEntry getDataEntry(String key) {
+        return this.data.get(key);
     }
 
     /**

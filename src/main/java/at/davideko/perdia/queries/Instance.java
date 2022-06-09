@@ -13,17 +13,17 @@ public class Instance {
     /**
      * The name of the instance
      */
-    public String name = null;
+    private String name;
 
     /**
      * The template the instance is utilising
      */
-    public Template tmp = null;
+    private Template tmp = null;
 
     /**
      * Hashmap for the data that the instance contains
      */
-    public HashMap<String, DataEntry> data = new HashMap<>();
+    private HashMap<String, DataEntry> data = new HashMap<>();
 
     /**
      * One of the constructors for the Instance class. This constructor creates a new instance with only the name
@@ -88,8 +88,9 @@ public class Instance {
     /**
      * Method used for writing values to the entries of an instance using a hashmap. The hashmap gets checked for
      * corresponding entries and the value assigned to them, replacing the value of the entry currently stored in
-     * the Instance object with the value from the given hashmap. It returns a PANG query for setting all the
-     * values that have been changed in the Instance object by this method to what they actually are.
+     * the Instance object with the value from the given hashmap. If the given keys don't exist in the data entries of
+     * the Instance, nothing changes. It returns a PANG query for setting all the values that have been changed in the
+     * Instance object by this method to what they actually are.
      * @param hm Hashmap the values are supposed to be copied form
      * @return String containing PANG query setting all the changed values
      */
@@ -99,7 +100,7 @@ public class Instance {
         r.append("SELECT \"" + this.name + "\"; \n");
 
         for (Map.Entry<String, DataEntry> addSet: hm.entrySet()) {
-            for (Map.Entry<String, DataEntry> existingSet: this.tmp.data.entrySet()) {
+            for (Map.Entry<String, DataEntry> existingSet: this.tmp.getData().entrySet()) {
                 if (addSet.getKey().equals(existingSet.getKey())) {
 
                     existingSet.getValue().write(addSet.getValue().read());
@@ -117,11 +118,41 @@ public class Instance {
     }
 
     /**
+     * Method used for writing a single value to an entry of an instance. The data entries get checked for the
+     * corresponding key, replacing the value of the entry currently stored in the Instance object with the value from
+     * the given DataEntry. If the given key doesn't exist in the data entries of the Instance, nothing changes. It
+     * returns a PANG query for setting the value that has been changed in the Instance object by this method to what
+     * it actually is.
+     * @param key Key that is getting matched
+     * @param de DataEntry to be written to the data entry with the corresponding key
+     * @return String containing PANG query setting the changed value
+     */
+    public String writeToQueryObject(String key, DataEntry de) {
+        StringBuilder r = new StringBuilder();
+
+        r.append("SELECT \"" + this.name + "\"; \n");
+
+        for (Map.Entry<String, DataEntry> existingSet: this.tmp.getData().entrySet()) {
+            if (key.equals(existingSet.getKey())) {
+                existingSet.getValue().write(de.read());
+
+                r.append("SET \"" + existingSet.getKey() + "\" VALUE " + de.read() + "; \n");
+
+                this.data.put(existingSet.getKey(), de);
+            }
+        }
+
+        r.append("END \"" + this.name + "\"; \n");
+
+        return r.toString();
+    }
+
+    /**
      * Returns a PANG query for querying the respective instance in the database
      * @return String containing PANG query for querying the respective instance
      */
     public String toQuery() {
-        return "QUERY \"" + this.name + "\" FROM INSTANCE;";
+        return "QUERY \"" + this.name + "\" FROM INSTANCE; \n";
     }
 
     /**
@@ -129,7 +160,7 @@ public class Instance {
      * @return String containing PANG query for querying the given instance based on its name
      */
     public static String toQuery(String name) {
-        return "QUERY \"" + name + "\" FROM INSTANCE;";
+        return "QUERY \"" + name + "\" FROM INSTANCE; \n";
     }
 
     /**
@@ -137,7 +168,7 @@ public class Instance {
      * @return String containing a PANG query for querying all existing instances
      */
     public static String queryAll() {
-        return "QUERY INSTANCE;";
+        return "QUERY INSTANCE; \n";
     }
 
     /**
@@ -149,6 +180,14 @@ public class Instance {
     }
 
     /**
+     * Sets the name of the respective instance.
+     * @param name The name of the instance to be set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
      * Returns the template of the respective instance.
      * @return The template of the instance
      */
@@ -157,11 +196,29 @@ public class Instance {
     }
 
     /**
+     * Sets the template of the respective instance. WARNING: This deletes all the currently stored data, as it's
+     * dependent on what entries the template has.
+     * @param tmp The template of the instance to be set
+     */
+    public void setTemplate(Template tmp) {
+        this.tmp = tmp;
+        this.data = new HashMap<>();
+    }
+
+    /**
      * Returns the data entries of the respective instance all stored in a hashmap.
      * @return Hashmap containing all the data entries of the instance
      */
     public HashMap<String, DataEntry> getData() {
         return this.data;
+    }
+
+    /**
+     * Returns the data entry with the given key of the respective instance.
+     * @return DataEntry corresponding to the key in the data Hashmap
+     */
+    public DataEntry getDataEntry(String key) {
+        return this.data.get(key);
     }
 
     /**

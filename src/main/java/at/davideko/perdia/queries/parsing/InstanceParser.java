@@ -84,12 +84,12 @@ public class InstanceParser {
         Instance query = new Instance("temp");
 
         // Matches the name of the template to all existing Template objects to get the corresponding one
-        query.tmp = allTemplates.stream()
+        query.setTemplate(allTemplates.stream()
                 .filter(allTemplates -> inst.getString("template").equals(allTemplates.getName()))
                 .findAny()
-                .orElse(null);
+                .orElse(null));
 
-        query.name = inst.getString("name");
+        query.setName(inst.getString("name"));
 
         JSONObject data = inst.getJSONObject("data");
         Iterator<String> keys = data.keys();
@@ -109,7 +109,7 @@ public class InstanceParser {
             }
 
             buffer.write(currentDynamicValue);
-            query.data.put(currentDynamicKey, buffer);
+            query.writeToQueryObject(currentDynamicKey, buffer);
         }
 
         return query;
