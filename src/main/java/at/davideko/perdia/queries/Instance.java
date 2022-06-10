@@ -157,6 +157,7 @@ public class Instance {
 
     /**
      * Returns a PANG query for querying the given instance based on its name in the database
+     * @param name Name of the instance to be queried from the database
      * @return String containing PANG query for querying the given instance based on its name
      */
     public static String toQuery(String name) {
@@ -215,6 +216,7 @@ public class Instance {
 
     /**
      * Returns the data entry with the given key of the respective instance.
+     * @param key Key of the DataEntry in the Instance object to be returned
      * @return DataEntry corresponding to the key in the data Hashmap
      */
     public DataEntry getDataEntry(String key) {

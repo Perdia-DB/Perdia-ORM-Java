@@ -5,6 +5,7 @@ import at.davideko.perdia.queries.data.DataEntry;
 import at.davideko.perdia.queries.data.DoubleDataEntry;
 import at.davideko.perdia.queries.data.LongDataEntry;
 import at.davideko.perdia.queries.data.StringDataEntry;
+import at.davideko.perdia.queries.storage.AllTemplates;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,8 +14,6 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import static at.davideko.perdia.queries.storage.AllTemplates.allTemplates;
 
 /**
  * Class for parsing instance queries in JSON format from the database to Instance objects
@@ -82,7 +81,7 @@ public class InstanceParser {
         Instance query = new Instance("temp");
 
         // Matches the name of the template to all existing Template objects to get the corresponding one
-        query.setTemplate(allTemplates.stream()
+        query.setTemplate(AllTemplates.get().stream()
                 .filter(allTemplates -> inst.getString("template").equals(allTemplates.getName()))
                 .findAny()
                 .orElse(null));

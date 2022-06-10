@@ -14,6 +14,7 @@ public class DoubleDataEntry extends DataEntry {
 
     /**
      * {@link DataEntry#write(Object)}
+     * @param value Double to be written to the DataEntry
      */
     public DoubleDataEntry(Double value) {
         write(value);

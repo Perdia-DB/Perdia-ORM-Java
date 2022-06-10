@@ -14,6 +14,7 @@ public class LongDataEntry extends DataEntry {
 
     /**
      * {@link DataEntry#write(Object)}
+     * @param value Long to be written to the DataEntry
      */
     public LongDataEntry(Long value) {
         write(value);

@@ -50,7 +50,7 @@ public class Crypto {
      * end of the array so the length becomes a multiple of 16.
      * @param bytes Byte array to be encrypted
      * @return Encrypted byte array including the buffer
-     * @exception InvalidKeyException If the key given in the .env file is invalid, an InvalidKeyException is thrown
+     * If the key given in the .env file is invalid, an InvalidKeyException is thrown
      * and caught.
      * @throws AssertionError An AssertionError gets thrown if any of the following exceptions get thrown and caught:
      * InvalidAlgorithmParameterException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException
@@ -89,11 +89,11 @@ public class Crypto {
      * the end of the array.
      * @param bytes Byte array to be decrypted
      * @return Decrypted byte array
-     * @exception BadPaddingException If the padding at the end of the encrypted byte array is incorrect, a
+     * If the padding at the end of the encrypted byte array is incorrect, a
      * BadPaddingException is thrown and caught.
-     * @exception IllegalBlockSizeException If the length of the encrypted byte array is not a multiple of 16, an
+     * If the length of the encrypted byte array is not a multiple of 16, an
      * IllegalBlockSizeException is thrown and caught. This may be because of a server-side error.
-     * @exception InvalidKeyException If the key given in the .env file is invalid, an InvalidKeyException is thrown
+     * If the key given in the .env file is invalid, an InvalidKeyException is thrown
      * and caught.
      * @throws AssertionError An AssertionError gets thrown if any of the following exceptions get thrown and caught:
      * InvalidAlgorithmParameterException, NoSuchAlgorithmException or NoSuchPaddingException. This is because the

@@ -6,8 +6,20 @@ package at.davideko.perdia.queries.data;
  * Floats, and Javas Integer and Float types are only 32-bit.
  */
 public enum DataType {
+    /**
+     * DataType for storing Strings
+     */
     STRING,
+    /**
+     * DataType for storing Longs (64-bit Integers)
+     */
     INTEGER,
+    /**
+     * DataType for storing Doubles (64-bit Floats)
+     */
     FLOAT,
+    /**
+     * DataType for entries that have no value yet
+     */
     UNDEFINED,
 }

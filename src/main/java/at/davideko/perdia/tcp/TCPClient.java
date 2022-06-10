@@ -25,10 +25,10 @@ public class TCPClient {
     }
 
     /**
-     * Sends the given data to the Perdia-DB server
+     * Sends the given data to the Perdia-DB server.
+     * If the given server socket does not exist, is offline or refusing connection, an
+     * IOException is thrown and caught.
      * @param text Byte array containing the single characters of the query text encoded in UTF-8
-     * @exception IOException If the given server socket does not exist, is offline or refusing connection, an
-     * IOException is thrown and caught
      */
     public void write(byte[] text) {
         try {
@@ -48,10 +48,10 @@ public class TCPClient {
     }
 
     /**
-     * Receives data sent by the Perdia-DB server
+     * Receives data sent by the Perdia-DB server.
+     * If the given server socket does not exist, is offline or refusing connection, an
+     * IOException is thrown and caught.
      * @return Byte array containing the single characters of the query text encoded in UTF-8
-     * @exception IOException If the given server socket does not exist, is offline or refusing connection, an
-     * IOException is thrown and caught
      */
     public byte[] read() {
         byte[] bytes = new byte[0];

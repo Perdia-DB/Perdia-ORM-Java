@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"at.davideko.perdia"},{"l":"at.davideko.perdia.crypto"},{"l":"at.davideko.perdia.queries"},{"l":"at.davideko.perdia.queries.data"},{"l":"at.davideko.perdia.queries.parsing"},{"l":"at.davideko.perdia.queries.storage"},{"l":"at.davideko.perdia.tcp"}];updateSearchResults();

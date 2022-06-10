@@ -118,10 +118,11 @@ public class Template {
 
     /**
      * Returns a PANG query for querying the given template based on its name in the database
+     * @param name Name of the template to be queried from the database
      * @return String containing PANG query for querying the given template based on its name
      */
-    public static String toQuery(String type) {
-        return "QUERY \"" + type + "\" FROM TEMPLATE; \n";
+    public static String toQuery(String name) {
+        return "QUERY \"" + name + "\" FROM TEMPLATE; \n";
     }
 
     /**
@@ -199,6 +200,7 @@ public class Template {
 
     /**
      * Returns the data entry with the given key of the template.
+     * @param key Key of the DataEntry in the Template object to be returned
      * @return DataEntry corresponding to the key in the data Hashmap
      */
     public DataEntry getDataEntry(String key) {
