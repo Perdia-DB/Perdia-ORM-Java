@@ -1,6 +1,7 @@
 package com.github.perdia.queries;
 
 import com.github.perdia.queries.data.DataEntry;
+import com.github.perdia.queries.data.DataType;
 import com.github.perdia.queries.storage.AllInstances;
 
 import java.util.HashMap;
@@ -112,7 +113,11 @@ public class Instance {
 
                     existingSet.getValue().write(addSet.getValue().read());
 
-                    r.append("SET \"" + existingSet.getKey() + "\" VALUE " + addSet.getValue().read() + "; \n");
+                    if (addSet.getValue().getDataType() == DataType.STRING) {
+                        r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + addSet.getValue().read() + "\"; \n");
+                    } else {
+                        r.append("SET \"" + existingSet.getKey() + "\" VALUE " + addSet.getValue().read() + "; \n");
+                    }
 
                     this.data.put(existingSet.getKey(), addSet.getValue());
                 }
@@ -143,7 +148,11 @@ public class Instance {
             if (key.equals(existingSet.getKey())) {
                 existingSet.getValue().write(de.read());
 
-                r.append("SET \"" + existingSet.getKey() + "\" VALUE " + de.read() + "; \n");
+                if (de.getDataType() == DataType.STRING) {
+                    r.append("SET \"" + existingSet.getKey() + "\" VALUE \"" + de.read() + "\"; \n");
+                } else {
+                    r.append("SET \"" + existingSet.getKey() + "\" VALUE " + de.read() + "; \n");
+                }
 
                 this.data.put(existingSet.getKey(), de);
             }
