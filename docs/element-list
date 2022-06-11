@@ -1,7 +1,7 @@
-at.davideko.perdia
-at.davideko.perdia.crypto
-at.davideko.perdia.queries
-at.davideko.perdia.queries.data
-at.davideko.perdia.queries.parsing
-at.davideko.perdia.queries.storage
-at.davideko.perdia.tcp
+com.github.perdia
+com.github.perdia.crypto
+com.github.perdia.queries
+com.github.perdia.queries.data
+com.github.perdia.queries.parsing
+com.github.perdia.queries.storage
+com.github.perdia.tcp
