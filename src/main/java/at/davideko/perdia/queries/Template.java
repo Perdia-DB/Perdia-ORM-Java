@@ -1,6 +1,7 @@
 package at.davideko.perdia.queries;
 
 import at.davideko.perdia.queries.data.*;
+import at.davideko.perdia.queries.storage.AllTemplates;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -30,6 +31,8 @@ public class Template {
      */
     public Template(String name) {
         this.name = name;
+
+        AllTemplates.add(this);
     }
 
     /**
@@ -41,6 +44,8 @@ public class Template {
     public Template(String name, HashMap<String, DataEntry> entries) {
         this.name = name;
         this.data = entries;
+
+        AllTemplates.add(this);
     }
 
     /**

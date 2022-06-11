@@ -1,6 +1,7 @@
 package at.davideko.perdia.queries;
 
 import at.davideko.perdia.queries.data.DataEntry;
+import at.davideko.perdia.queries.storage.AllInstances;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,8 @@ public class Instance {
      */
     public Instance(String name) {
         this.name = name;
+
+        AllInstances.add(this);
     }
 
     /**
@@ -46,6 +49,8 @@ public class Instance {
         this.name = name;
         this.tmp = tmp;
         this.data = tmp.getData();
+
+        AllInstances.add(this);
     }
 
     /**
@@ -60,6 +65,8 @@ public class Instance {
         this.name = name;
         this.tmp = qo.tmp;
         this.data = qo.data;
+
+        AllInstances.add(this);
     }
 
     /**
