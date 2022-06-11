@@ -5,14 +5,15 @@ import at.davideko.perdia.queries.storage.AllTemplates;
 import at.davideko.perdia.tcp.TCPClient;
 import io.github.cdimascio.dotenv.Dotenv;
 
-public class Main {
+public class Core {
 
-    public static void main(String[] args) {
+    public static TCPClient init() {
         Dotenv dotenv = Dotenv.load();
 
 	    TCPClient client = new TCPClient(dotenv.get("IP"), Integer.parseInt(dotenv.get("PORT")));
 
         AllTemplates.fetch(client);
         AllInstances.fetch(client);
+        return client;
     }
 }
