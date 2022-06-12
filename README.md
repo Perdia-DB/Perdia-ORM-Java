@@ -9,5 +9,5 @@ An object relational mapper for Perdia-DB written in Java.
 |AES_KEY|Key used for traffic encryption using AES-128.|
 
 ## Javadoc Documentation
-
+The online Javadoc Documentation can be found <a href="https://perdia-db.github.io/Perdia-ORM-Java/">here</a>.
 
