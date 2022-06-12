@@ -172,6 +172,7 @@ public class Instance {
         StringBuilder r = new StringBuilder();
 
         r.append("CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n");
+        r.append("SELECT \"" + this.name + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
             DataEntry de = set.getValue();
