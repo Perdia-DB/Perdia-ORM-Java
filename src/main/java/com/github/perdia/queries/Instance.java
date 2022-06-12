@@ -171,7 +171,7 @@ public class Instance {
     public String allInOneQuery() {
         StringBuilder r = new StringBuilder();
 
-        r.append("CREATE \"" + this.name + "\" INSTANCE \"" + this.tmp.getName() + "\"; \n");
+        r.append("CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n");
         r.append("SELECT \"" + this.name + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
@@ -182,8 +182,6 @@ public class Instance {
             } else {
                 r.append("SET \"" + set.getKey() + "\" VALUE " + de.read() + "; \n");
             }
-
-            this.data.put(set.getKey(), de);
         }
 
         r.append("END \"" + this.name + "\"; \n");
