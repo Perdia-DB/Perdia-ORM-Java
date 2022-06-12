@@ -78,7 +78,7 @@ public class Instance {
      */
     public String createInstance(Template tmp) {
         this.tmp = tmp;
-        return "CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n";
+        return "CREATE \"" + this.name + "\" INSTANCE \"" + this.tmp.getName() + "\"; \n";
     }
 
     /**
@@ -171,7 +171,7 @@ public class Instance {
     public String allInOneQuery() {
         StringBuilder r = new StringBuilder();
 
-        r.append("CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n");
+        r.append("CREATE \"" + this.name + "\" INSTANCE \"" + this.tmp.getName() + "\"; \n");
         r.append("SELECT \"" + this.name + "\"; \n");
 
         for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
