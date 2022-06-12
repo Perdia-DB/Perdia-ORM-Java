@@ -164,6 +164,33 @@ public class Instance {
     }
 
     /**
+     * Turns the current Instance object in to a PANG query which creates the instance in the database and also writes
+     * the values.
+     * @return String containing a PANG query for creating the instance and writing the values
+     */
+    public String allInOneQuery() {
+        StringBuilder r = new StringBuilder();
+
+        r.append("CREATE \"" + this.name + "\" TEMPLATE \"" + this.tmp.getName() + "\"; \n");
+
+        for (Map.Entry<String, DataEntry> set: this.data.entrySet()) {
+            DataEntry de = set.getValue();
+
+            if (de.getDataType() == DataType.STRING) {
+                r.append("SET \"" + set.getKey() + "\" VALUE \"" + de.read() + "\"; \n");
+            } else {
+                r.append("SET \"" + set.getKey() + "\" VALUE " + de.read() + "; \n");
+            }
+
+            this.data.put(set.getKey(), de);
+        }
+
+        r.append("END \"" + this.name + "\"; \n");
+
+        return r.toString();
+    }
+
+    /**
      * Returns a PANG query for querying the respective instance in the database
      * @return String containing PANG query for querying the respective instance
      */
